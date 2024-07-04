@@ -1,0 +1,267 @@
+﻿<html>
+   <head>
+      <style type="text/css">
+         p {font-size:30px; font-family: David; margin: 0;}
+         p.pink{font-size:16px; font-family: David;}
+         p.ivrit{font-size:20px; font-family: David;}
+         a{ text-decoration:none; }
+         <p class="pink" align="center">
+         <p class="pink">
+            &nbsp;&nbs
+            <font color="red"></font>
+            <a name="">
+            <font><a href="#1"style="text-decoration:none"></a></font>
+      </style>
+      <style type="text/css" id="operaUserStyle"></style>
+   </head>
+   <body>
+<blockquote>
+   <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 50px;">
+      <div style="width: 70vw; display: flex; justify-content: space-between;">
+         <div>
+            <div>
+               <p class="pink" align="right">
+                  <strong>
+                     <font>
+                        {% if modal == 'about' %}
+                        <a href="{% url 'change_filter' param='modal' value='main' %}" style="text-decoration:none">?</a>
+                        {% else %}
+                        <a href="{% url 'change_filter' param='modal' value='about' %}" style="text-decoration:none">?</a>
+                        {% endif %}
+                     </font>
+                     {{locale.site_name}}
+                  </strong>
+               </p>
+               <form action="" method="GET">
+                  <input type="text" name="root" placeholder="Введите корень" value="{{input_word}}">
+                  <input type="hidden" name="group_filter" value="{{chosen_filter}}">
+                  <input type="hidden" name="r_filter" value="{{r_filter}}">
+                  <button type="submit">{{locale.find}}</button>
+               </form>
+            </div>
+            <div>
+               <p class="pink" align="right">
+                  {% if language == 'ru' %}
+                  <font color="red"><strong>рус</strong></font>
+                  {% else %}
+                  <a href="{% url 'change_filter' param='language' value='ru' %}">рус</a>
+                  {% endif %}
+                  /
+                  {% if language == 'ua' %}
+                  <font color="red"><strong>укр</strong></font>
+                  {% else %}
+                  <a href="{% url 'change_filter' param='language' value='ua' %}">укр</a>
+                  {% endif %}
+                  /
+                  {% if language == 'en' %}
+                  <font color="red"><strong>eng</strong></font>
+                  {% else %}
+                  <a href="{% url 'change_filter' param='language' value='en' %}">eng</a>
+                  {% endif %}
+                  <br>
+
+                  <strong>{{locale.binyans}}</strong><br>
+
+                  {% if chosen_root %}
+                     {% if chosen_root.binyans.all %}
+                        {% for binyan in chosen_root.binyans.all %}
+                           {% if binyan == chosen_binyan %}
+                              <strong><font color="red">{{binyan}}</font></strong><br>
+                           {% else %}
+                              <strong><a style="color: black;" href="{% url 'change_filter' param='binyan' value=binyan.binyan %}">{{binyan}}</a></strong><br>
+                           {% endif %}
+                        {% endfor %}
+                     {% else %}
+                        <br>У корня нет биньянов&nbsp;&nbsp;<br><br>
+                     {% endif %}
+                  {% else %}
+                     <br>Выберите корень&nbsp;&nbsp;<br><br>
+                  {% endif %}
+               </p>
+            </div>
+            <div>
+               <p class="pink" align="right"><strong>{{locale.by_time}}</strong></p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a href="{% url 'change_filter' param='r_filter' value='all' %}" style="text-decoration:none">{{locale.all_table}}</a>
+                        </font>
+                     </p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a href="{% url 'change_filter' param='r_filter' value='1' %}" style="text-decoration:none">{{locale.present}}</a>
+                        </font>
+                     </p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a href="{% url 'change_filter' param='r_filter' value='2' %}" style="text-decoration:none">{{locale.past}}</a>
+                        </font>
+                     </p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a href="{% url 'change_filter' param='r_filter' value='3' %}" style="text-decoration:none">{{locale.future}}</a>
+                        </font>
+                     </p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a href="{% url 'change_filter' param='r_filter' value='4' %}" style="text-decoration:none">{{locale.naklon}}</a>
+                        </font>
+                     </p>
+            </div>
+         </div>
+         {% if modal == 'about' %}
+         <div style="margin-left: 50px; margin-right: 50px;">
+            {% if language == 'ru' %}
+            <p class="pink" align="">Сайт на русском, украинском и английском языках предназначен для тех, кто начинает изучать и уже изучает иврит.
+               <br><br>
+               Главная страница  открывается списком корней в алфавитном порядке и таблицей спряжения глаголов с корнем
+               <font color="red"> <strong>«א.כ.ד.»</strong></font>, который находится в верхней части списка.
+               <br><br>В ячейку ввода слов, введите корень или любую глагольную форму, в настоящем прошедшем или будущем времени, откроется группа корней глаголов, которые спрягаются по одной и той же схеме
+               <br><br>
+               Спряжения глаголов содержащих один и тот же корень, реализуются в пределах от 1 до 7 биньянов и у пользователя есть возможность открывать  биньяны этих глаголов, а также открывать таблицы спряжения глаголов отдельно по временам
+               <br><br>
+            </p>
+            {% elif language == 'ua' %}
+            <p class="pink" align="">Сайт російською, українською та англійською мовами призначений для тих, хто починає вивчати та вже вивчає іврит.
+               <br><br>
+               Головна сторінка відкривається списком коренів в алфавітному порядку та таблицею відмінювання дієслів з коренем
+               <font color="red"> <strong>«א.כ.ד.»</strong></font>, що знаходиться у верхній частині списку.
+               <br><br>В комірку введення слів, введіть корінь або будь-яку дієслівну форму, в минулому або майбутньому часі, відкриється група коренів дієслів, які відмінюються за однією і тією ж схемою
+               <br><br>
+               Відмінювання дієслів містять один і той же корінь, реалізуються в межах від 1 до 7 біньян і у користувача є можливість відкривати біньяни цих дієслів, а також відкривати таблиці відмінювання дієслів окремо за часом
+               <br><br>
+            </p>
+            {% elif language == 'en' %}
+            <p class="pink" align="">The site in Russian, Ukrainian and English is intended for those who are beginning to study and are already learning Hebrew.
+               <br><br>
+               The main page opens with a list of roots in alphabetical order and a table of conjugations of verbs with the root
+               <font color="red"> <strong>«א.כ.ד.»</strong></font>, which is at the top of the list.
+               <br><br>In the word entry cell, enter a root or any verb form, in the present past or future tense, a group of verb roots will open that are conjugated according to the same pattern
+               <br><br>
+               Conjugations of verbs containing the same root are implemented in the range from 1 to 7 binyans and the user has the opportunity to open binyans of these verbs, as well as open verb conjugation tables separately by tense
+               <br><br>
+            </p>
+            {% endif %}
+         </div>
+         {% else %}
+         <div style="max-height: 90vh; overflow-y: scroll; width: 250px;">
+            <div style="display: flex; align-items: center;">
+               <div style="width: 100px;">
+                  <p align="right"><strong>{{chosen_binyan}}&nbsp;&nbsp;</strong></p>
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>בִּנייָן</strong><strong></strong></p>
+               </div>
+            </div>
+            <div style="display: flex; align-items: center;">
+               <div style="width: 100px;">
+                  <p class="pink" align="right" style="font-size: 16px;"><strong>{{infinitive}}&nbsp;&nbsp;</strong></p>
+               </div>
+               <div style="width: 130px;">
+                  <p class="pink" style="font-size: 16px;"><strong>{{locale.infinitive}}&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+            {% for category in r_categories %}
+            <div style="display: flex; align-items: center;">
+               <div style="width: 100px;">
+                  {% if input_word == category.word %}
+                  <p align="right" style="color: red;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
+                  {% else %}
+                  <p align="right"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
+                  {% endif %}
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>{{category.description}}&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+         {% endif %}
+         <div style="max-height: 90vh; overflow-y: scroll; width: 200px;">
+            <p class="pink" align="center">
+               <strong>
+<!--                  <font color="red">-->
+<!--                     {{locale.all_groups}}-->
+<!--                  </font>-->
+                  {% if chosen_filter == 'root' %}
+                  {% else %}
+                  {% endif %}
+                  <font>
+                     <a href="{% url 'index' %}?group_filter=all">{{locale.all_groups}}</a>
+                  </font>
+                  /
+                  <font>
+                     <a href="{% url 'index' %}?group_filter=number">{{locale.by_groups}}</a>
+                  </font>
+               </strong>
+            </p>
+            {% if chosen_root %}
+            <p align="center"><strong><font color="red">{{chosen_root}}</font></strong><strong></strong></p>
+            {% endif %}
+            {{group}}
+            {% if chosen_filter == 'number' and chosen_root.group == 100000 %}
+               <p class="pink" align="" style="width: 130px; text-align: center; margin-top: 20px;">
+                  {% if language == 'ru' %}
+                  Из 2700 таблиц глаголов, только 1400 разбиты на группы, которые спрягаются по одной и той же схеме
+                  Таблицы, с данным корнем, <strong style="font-size: 30px;">{{chosen_root}}</strong>, не входят ни в какую группу
+                  {% elif language == 'ua' %}
+                  З 2700 таблиць дієслів, лише 1400 розбиті на групи, які відмінюються за однією і тією ж схемою
+                  Таблиці, з цим коренем, <strong style="font-size: 30px;">{{chosen_root}}</strong>, не входять до жодної групи
+                  {% elif language == 'en' %}
+                  Of the 2,700 verb tables, only 1,400 are divided into groups that conjugate according to the same pattern
+                  Tables with a given root,<strong style="font-size: 30px;">{{chosen_root}}</strong>, do not belong to any group
+                  {% endif %}
+               </p>
+            {% else %}
+               {% for root in roots %}
+               <p align="center"><strong>
+                  <a href="{% url 'index' %}?root={{root}}&group_filter={{chosen_filter}}&r_filter={{r_filter}}" style="color: black;">
+                     {{root}}
+                  </a>
+                  </strong>
+               </p>
+               {% endfor %}
+            {% endif %}
+         </div>
+      </div>
+   </div>
+   <div style="display: flex; justify-content: center;">
+      <div style="width: 50%;">
+         {% if language == 'ru' %}
+         <p style="font-size: 18px;">
+            Сайт предназначен для тех, кто начинает изучать и уже изучает иврит.
+         </p>
+         <p style="font-size: 18px;">
+            Спряжения глаголов содержащих один и тот же корень, реализуются в пределах от 1 до 7 биньянов и у пользователя есть возможность открывать биньяны этих глаголов, а также открывать таблицы спряжения глаголов отдельно по временам
+         </p>
+         <p style="font-size: 18px;">
+            В ячейку ввода слов, введите корень или любую глагольную форму, в настоящем прошедшем или будущем времени, откроется группа корней глаголов, которые спрягаются по одной и той же схеме
+         </p>
+         {% elif language == 'ua' %}
+         <p style="font-size: 18px;">
+            Сайт призначений для тих, хто починає вивчати та вже вивчає іврит.
+         </p>
+         <p style="font-size: 18px;">
+            Відмінювання дієслів містять один і той же корінь, реалізуються в межах від 1 до 7 біньян і у користувача є можливість відкривати біньяни цих дієслів, а також відкривати таблиці відмінювання дієслів окремо за часом
+         </p>
+         <p style="font-size: 18px;">
+            В комірку введення слів, введіть корінь або будь-яку дієслівну форму, в минулому або майбутньому часі, відкриється група коренів дієслів, які відмінюються за однією і тією ж схемою
+         </p>
+         {% elif language == 'en' %}
+         <p style="font-size: 18px;">
+            The site is intended for those who are beginning to study and are already learning Hebrew.
+         </p>
+         <p style="font-size: 18px;">
+            Conjugations of verbs containing the same root are implemented in the range from 1 to 7 binyans and the user has the opportunity to open binyans of these verbs, as well as open verb conjugation tables separately by tense
+         </p>
+         <p style="font-size: 18px;">
+            In the word entry cell, enter a root or any verb form, in the present past or future tense, a group of verb roots will open that are conjugated according to the same pattern
+         </p>
+         {% endif %}
+      </div>
+   </div>
+   <a name="1">
+   </a>
+</blockquote>
+
+   </body>
+</html>
