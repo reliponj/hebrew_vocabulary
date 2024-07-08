@@ -2,6 +2,8 @@
    <head>
       <style type="text/css">
          p {font-size:30px; font-family: David; margin: 0;}
+         form {margin-block-end: 0;}
+
          p.pink{font-size:16px; font-family: David;}
          p.ivrit{font-size:20px; font-family: David;}
          a{ text-decoration:none; }
@@ -16,6 +18,42 @@
    </head>
    <body>
 <blockquote>
+   <div style="display: flex; justify-content: center;">
+      <div style="width: 50%;">
+         {% if language == 'ru' %}
+         <p style="font-size: 18px;">
+            Сайт предназначен для тех, кто начинает изучать и уже изучает иврит.
+         </p>
+         <p style="font-size: 18px;">
+            Спряжения глаголов содержащих один и тот же корень, реализуются в пределах от 1 до 7 биньянов и у пользователя есть возможность открывать биньяны этих глаголов, а также открывать таблицы спряжения глаголов отдельно по временам
+         </p>
+         <p style="font-size: 18px;">
+            В ячейку ввода слов, введите корень или любую глагольную форму, в настоящем прошедшем или будущем времени, откроется группа корней глаголов, которые спрягаются по одной и той же схеме
+         </p>
+         {% elif language == 'ua' %}
+         <p style="font-size: 18px;">
+            Сайт призначений для тих, хто починає вивчати та вже вивчає іврит.
+         </p>
+         <p style="font-size: 18px;">
+            Відмінювання дієслів містять один і той же корінь, реалізуються в межах від 1 до 7 біньян і у користувача є можливість відкривати біньяни цих дієслів, а також відкривати таблиці відмінювання дієслів окремо за часом
+         </p>
+         <p style="font-size: 18px;">
+            В комірку введення слів, введіть корінь або будь-яку дієслівну форму, в минулому або майбутньому часі, відкриється група коренів дієслів, які відмінюються за однією і тією ж схемою
+         </p>
+         {% elif language == 'en' %}
+         <p style="font-size: 18px;">
+            The site is intended for those who are beginning to study and are already learning Hebrew.
+         </p>
+         <p style="font-size: 18px;">
+            Conjugations of verbs containing the same root are implemented in the range from 1 to 7 binyans and the user has the opportunity to open binyans of these verbs, as well as open verb conjugation tables separately by tense
+         </p>
+         <p style="font-size: 18px;">
+            In the word entry cell, enter a root or any verb form, in the present past or future tense, a group of verb roots will open that are conjugated according to the same pattern
+         </p>
+         {% endif %}
+      </div>
+   </div>
+
    <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 50px;">
       <div style="width: 70vw; display: flex; justify-content: space-between;">
          <div>
@@ -142,19 +180,35 @@
             </p>
             {% endif %}
          </div>
+         {% elif modal == 'no_verb' %}
+         <div style="margin-left: 50px; margin-right: 50px;">
+            {% if language == 'ru' %}
+            <p class="pink" align="">
+               Такого глагола в этом списке нет
+            </p>
+            {% elif language == 'ua' %}
+            <p class="pink" align="">
+               Такого дієслова у цьому списку немає
+            </p>
+            {% elif language == 'en' %}
+            <p class="pink" align="">
+               No such verb in the list
+            </p>
+            {% endif %}
+         </div>
          {% else %}
          <div style="max-height: 90vh; overflow-y: scroll; width: 250px;">
             <div style="display: flex; align-items: center;">
-               <div style="width: 100px;">
-                  <p align="right"><strong>{{chosen_binyan}}&nbsp;&nbsp;</strong></p>
+               <div style="width: 110px;">
+                  <p align="right" style="margin-right: 10px;"><strong>{{chosen_binyan}}&nbsp;&nbsp;</strong></p>
                </div>
                <div style="width: 130px;">
                   <p class="ivrit"><strong>בִּנייָן</strong><strong></strong></p>
                </div>
             </div>
             <div style="display: flex; align-items: center;">
-               <div style="width: 100px;">
-                  <p class="pink" align="right" style="font-size: 16px;"><strong>{{infinitive}}&nbsp;&nbsp;</strong></p>
+               <div style="width: 110px;">
+                  <p class="pink" align="right" style="font-size: 16px; margin-right: 15px;"><strong>{{infinitive}}&nbsp;&nbsp;</strong></p>
                </div>
                <div style="width: 130px;">
                   <p class="pink" style="font-size: 16px;"><strong>{{locale.infinitive}}&nbsp;&nbsp;</strong></p>
@@ -162,11 +216,11 @@
             </div>
             {% for category in r_categories %}
             <div style="display: flex; align-items: center;">
-               <div style="width: 100px;">
-                  {% if input_word == category.word %}
-                  <p align="right" style="color: red;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
+               <div style="width: 110px;">
+                  {% if chosen_word == category.word %}
+                  <p align="right" style="color: red; margin-right: 10px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
                   {% else %}
-                  <p align="right"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
+                  <p align="right" style="margin-right: 10px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
                   {% endif %}
                </div>
                <div style="width: 130px;">
@@ -224,43 +278,6 @@
          </div>
       </div>
    </div>
-   <div style="display: flex; justify-content: center;">
-      <div style="width: 50%;">
-         {% if language == 'ru' %}
-         <p style="font-size: 18px;">
-            Сайт предназначен для тех, кто начинает изучать и уже изучает иврит.
-         </p>
-         <p style="font-size: 18px;">
-            Спряжения глаголов содержащих один и тот же корень, реализуются в пределах от 1 до 7 биньянов и у пользователя есть возможность открывать биньяны этих глаголов, а также открывать таблицы спряжения глаголов отдельно по временам
-         </p>
-         <p style="font-size: 18px;">
-            В ячейку ввода слов, введите корень или любую глагольную форму, в настоящем прошедшем или будущем времени, откроется группа корней глаголов, которые спрягаются по одной и той же схеме
-         </p>
-         {% elif language == 'ua' %}
-         <p style="font-size: 18px;">
-            Сайт призначений для тих, хто починає вивчати та вже вивчає іврит.
-         </p>
-         <p style="font-size: 18px;">
-            Відмінювання дієслів містять один і той же корінь, реалізуються в межах від 1 до 7 біньян і у користувача є можливість відкривати біньяни цих дієслів, а також відкривати таблиці відмінювання дієслів окремо за часом
-         </p>
-         <p style="font-size: 18px;">
-            В комірку введення слів, введіть корінь або будь-яку дієслівну форму, в минулому або майбутньому часі, відкриється група коренів дієслів, які відмінюються за однією і тією ж схемою
-         </p>
-         {% elif language == 'en' %}
-         <p style="font-size: 18px;">
-            The site is intended for those who are beginning to study and are already learning Hebrew.
-         </p>
-         <p style="font-size: 18px;">
-            Conjugations of verbs containing the same root are implemented in the range from 1 to 7 binyans and the user has the opportunity to open binyans of these verbs, as well as open verb conjugation tables separately by tense
-         </p>
-         <p style="font-size: 18px;">
-            In the word entry cell, enter a root or any verb form, in the present past or future tense, a group of verb roots will open that are conjugated according to the same pattern
-         </p>
-         {% endif %}
-      </div>
-   </div>
-   <a name="1">
-   </a>
 </blockquote>
 
    </body>

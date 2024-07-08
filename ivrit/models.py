@@ -46,10 +46,22 @@ class Spisok1(models.Model):
         ordering = ['links']
 
 
+class Group(models.Model):
+    group = models.IntegerField()
+    roots = models.ManyToManyField('Root', blank=True, related_name='groups')
+
+    class Meta:
+        verbose_name = 'Group'
+        verbose_name_plural = 'Groups'
+        ordering = ['group']
+
+    def __str__(self):
+        return str(self.group)
+
+
 class Root(models.Model):
     root = models.CharField(max_length=50)
-    group = models.IntegerField(default=100000)
-    number = models.IntegerField(default=100000)
+    number = models.IntegerField(default=10000)
 
     class Meta:
         verbose_name = 'Root'
@@ -64,6 +76,12 @@ class Root(models.Model):
         for bin in self.binyans.all():
             binyans.append(bin.binyan)
         return '  |  '.join(binyans)
+
+    def get_groups(self):
+        groups = []
+        for group in self.groups.all():
+            groups.append(str(group.group))
+        return '  |  '.join(groups)
 
 
 class Binyan(models.Model):

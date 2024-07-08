@@ -1,12 +1,13 @@
 import openpyxl
 from django.core.management import BaseCommand
 
-from ivrit.models import Vocabulary, Root, Binyan, Spisok6
+from ivrit.models import Vocabulary, Root, Binyan, Spisok6, Group
 
 
 def import_vocabulary():
     vocabulary = Vocabulary.objects.filter()
 
+    Group.objects.all().delete()
     Root.objects.all().delete()
     Binyan.objects.all().delete()
 
@@ -41,7 +42,18 @@ def import_spisok_6():
             continue
 
         root = root.first()
-        root.group = spisok.tables_2.split('-')[0]
+        if root.groups.all():
+            continue
+
+        group_name = spisok.tables_2.split('-')[0]
+        group = Group.objects.filter(group=group_name)
+        if not group:
+            group = Group(group=group_name)
+            group.save()
+        else:
+            group = group.first()
+
+        group.roots.add(root)
         root.number = spisok.tables
         root.save()
 

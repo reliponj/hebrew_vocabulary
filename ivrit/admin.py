@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from ivrit.models import Root, Vocabulary, Spisok6, RCategory, Spisok1, Binyan
+from ivrit.models import Root, Vocabulary, Spisok6, RCategory, Spisok1, Binyan, Group
 
 
 @admin.register(Vocabulary)
@@ -23,9 +23,15 @@ class BinyanAdmin(admin.TabularInline):
     extra = 0
 
 
+@admin.register(Group)
+class GroupAdmin(admin.ModelAdmin):
+    list_display = ['group']
+
+
 @admin.register(Root)
 class RootAdmin(admin.ModelAdmin):
-    list_display = ['root', 'get_binyans', 'number', 'group']
+    search_fields = ['root']
+    list_display = ['root', 'get_binyans', 'get_groups', 'number']
     inlines = [BinyanAdmin]
 
 

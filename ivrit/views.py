@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from ivrit.models import Vocabulary, Root, RCategory, Spisok1
@@ -15,7 +16,7 @@ def index(request):
         root = roots[0].root
 
     binyan = request.GET.get('binyan', None)
-    chosen_root, root = get_root(root)
+    chosen_root, chosen_word = get_root(root)
     if not chosen_root:
         return
     if not binyan:
@@ -25,11 +26,20 @@ def index(request):
 
     if chosen_filter == 'number':
         if not request.GET.get('root'):
-            roots = roots.filter(group__lt=10000).order_by('number')
+            roots = roots.filter(~Q(groups=None)).order_by('number')
         else:
-            roots = roots.filter(group=chosen_root.group).order_by('number')
+            group = chosen_root.groups.filter().first()
+            if not group:
+                roots = []
+            else:
+                roots = roots.filter(groups__in=[group]).order_by('number')
 
-    r_categories, infinitive = get_sub_data(chosen_root, chosen_binyan, r_filter, language)
+    if not chosen_binyan:
+        r_categories, infinitive = None, None
+        modal = 'no_verb'
+    else:
+        r_categories, infinitive = get_sub_data(chosen_root, chosen_binyan, r_filter, language)
+
     context = {
         "chosen_filter": chosen_filter,
         "r_filter": r_filter,
@@ -39,6 +49,7 @@ def index(request):
         "infinitive": infinitive,
 
         "chosen_root": chosen_root,
+        "chosen_word": chosen_word,
         "chosen_binyan": chosen_binyan,
         "input_word": root,
 
