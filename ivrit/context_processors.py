@@ -17,6 +17,7 @@ def context_controller(request):
             "by_groups": "по групам",
 
             "find": "Найти",
+            "input": "Введите корень или глагольную форму",
         },
         "ua": {
             "site_name": "Корені дієслів",
@@ -31,6 +32,7 @@ def context_controller(request):
             "all_groups": "всі",
             "by_groups": "за групами",
             "find": "Знайти",
+            "input": "Введіть корінь або дієслівну форму",
         },
         "en": {
             "site_name": "Verb Roots",
@@ -45,6 +47,7 @@ def context_controller(request):
             "all_groups": "all",
             "by_groups": "by groups",
             "find": "Find",
+            "input": "Enter root or verb form",
         }
     }
 
