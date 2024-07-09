@@ -60,7 +60,6 @@ def index(request):
 
 
 def get_root(root):
-    result_word = root
     spisok = Spisok1.objects.filter(word=root)
     if not spisok:
         spisok = Spisok1.objects.filter(roots=root)
@@ -68,10 +67,10 @@ def get_root(root):
             spisok = Spisok1.objects.filter(words=root)
             if not spisok:
                 return None
-    else:
-        result_word = spisok.first().words
 
     spisok = spisok.first()
+    result_word = spisok.word
+
     root = Root.objects.filter(root=spisok.roots)
     if not root:
         return None
@@ -118,6 +117,7 @@ def get_sub_data(chosen_root, chosen_binyan, r_filter, language):
         found = same_links.filter(r=category.r)
         if found:
             category.word = found.first().words
+            category.word_simple = found.first().word
 
     slovar = Vocabulary.objects.filter(root=chosen_root.root, binyan=chosen_binyan.binyan)
     if not slovar:
