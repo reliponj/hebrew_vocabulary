@@ -18,6 +18,16 @@ def context_controller(request):
 
             "find": "Найти",
             "input": "Введите корень или глагольную форму",
+
+            "login_account": "Войти в аккаунт",
+            "enter_email": "Введите email",
+            "enter_password": "Введите пароль",
+            "sign_up": "Нет аккаунта? Регистрация",
+            
+            "sign_up_account": "Регистрация",
+            "login": "Есть аккаунт? Войти",
+            "login_enter": "Войти",
+            "logout": "Выйти"
         },
         "ua": {
             "site_name": "Корені дієслів",
@@ -53,5 +63,6 @@ def context_controller(request):
 
     context = {
         'locale': locales[language],
+        "language": language,
     }
     return context

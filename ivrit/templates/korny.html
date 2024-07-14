@@ -43,6 +43,12 @@
       <div style="width: 90vw; display: flex; justify-content: space-between;">
          <div>
             <div>
+               <div>
+                  {{user.email}}
+                  /
+                  /
+                  <a href="{% url 'logout' %}">{{locale.logout}}</a>
+               </div>
                <p class="pink" align="right">
                   <strong>
                      <font>
