@@ -10,8 +10,16 @@
                <div>
                   {{user.email}}
                   /
-                  /
                   <a href="{% url 'logout' %}">{{locale.logout}}</a>
+               </div>
+               <div>
+                  {% if user.is_subscribe %}
+                  {{locale.status_sub}}
+                  {% else %}
+                  {{locale.status_not_sub}}
+                  {% endif %}
+                  /
+                  <a href="{% url 'pay_status' %}">{{locale.manage_sub}}</a>
                </div>
                <p class="pink" align="right">
                   <strong>

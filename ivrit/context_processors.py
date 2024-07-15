@@ -30,7 +30,17 @@ def context_controller(request):
             "sign_up_account": "Регистрация",
             "login": "Есть аккаунт? Войти",
             "login_enter": "Войти",
-            "logout": "Выйти"
+            "logout": "Выйти",
+
+            "subscription_status": "Статус подписки",
+            "status_sub": "Статус: Активна",
+            "status_not_sub": "Статус: Неактивна",
+            "active_to": "Активна до",
+            "continue_sub": "Продлить",
+            "trial": 'Попробовать 30 дней бесплатно',
+            "home": "На главную",
+
+            "manage_sub": "Управлять подпиской"
         },
         "ua": {
             "site_name": "Корені дієслів",

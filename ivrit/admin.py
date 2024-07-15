@@ -26,21 +26,21 @@ class Spisok1Admin(admin.ModelAdmin):
     list_display = ['roots', 'words', 'word', 'r', 'links']
 
 
-class BinyanAdmin(admin.TabularInline):
-    model = Binyan
-    extra = 0
-
-
-@admin.register(Group)
-class GroupAdmin(admin.ModelAdmin):
-    list_display = ['group']
-
-
-@admin.register(Root)
-class RootAdmin(admin.ModelAdmin):
-    search_fields = ['root']
-    list_display = ['root', 'get_binyans', 'get_groups', 'number']
-    inlines = [BinyanAdmin]
+# class BinyanAdmin(admin.TabularInline):
+#     model = Binyan
+#     extra = 0
+#
+#
+# @admin.register(Group)
+# class GroupAdmin(admin.ModelAdmin):
+#     list_display = ['group']
+#
+#
+# @admin.register(Root)
+# class RootAdmin(admin.ModelAdmin):
+#     search_fields = ['root']
+#     list_display = ['root', 'get_binyans', 'get_groups', 'number']
+#     inlines = [BinyanAdmin]
 
 
 @admin.register(RCategory)

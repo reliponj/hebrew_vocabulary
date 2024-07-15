@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'ivrit',
+    'user',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTH_USER_MODEL = "user.User"
 ROOT_URLCONF = 'ivrit_roots.urls'
 
 TEMPLATES = [
@@ -159,3 +162,5 @@ JAZZMIN_SETTINGS = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+ALLPAY_LOGIN = env('ALLPAY_LOGIN')
+ALLPAY_API_KEY = env('ALLPAY_API_KEY')

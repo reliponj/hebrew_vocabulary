@@ -52,6 +52,8 @@ def sign_up(request):
 def index(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    if not request.user.is_subscribe:
+        return redirect('pay_status')
 
     chosen_filter = request.GET.get('group_filter', 'root')
     r_filter = request.GET.get('r_filter', 'all')

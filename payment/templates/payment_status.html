@@ -1,0 +1,87 @@
+{% extends 'includes/base.html' %}
+
+{% block 'content' %}
+   <body>
+<blockquote>
+   <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 50px;">
+      <div style="width: 90vw; display: flex; justify-content: space-between;">
+          <div style="width: 40vw;">
+               <p class="pink">
+                  {% if language == 'ru' %}
+                  <font color="red"><strong>рус</strong></font>
+                  {% else %}
+                  <a href="{% url 'change_filter' param='language' value='ru' %}">рус</a>
+                  {% endif %}
+                  /
+                  {% if language == 'ua' %}
+                  <font color="red"><strong>укр</strong></font>
+                  {% else %}
+                  <a href="{% url 'change_filter' param='language' value='ua' %}">укр</a>
+                  {% endif %}
+                  /
+                  {% if language == 'en' %}
+                  <font color="red"><strong>eng</strong></font>
+                  {% else %}
+                  <a href="{% url 'change_filter' param='language' value='en' %}">eng</a>
+                  {% endif %}
+                  <br>
+               </p>
+              <form action="" method="POST" style="display: flex; flex-direction: column;">
+                 {% csrf_token %}
+                  <h1>{{locale.subscription_status}}</h1>
+                     {% if user.is_subscribe %}
+                     <p style="font-size: 16px;">{{locale.status_sub}}</p>
+                     {% else %}
+                     <p style="font-size: 16px;">{{locale.status_not_sub}}</p>
+                     {% endif %}
+                     <p style="font-size: 16px;">{{locale.active_to}}: {{user.get_sub_date}}</p>
+                 <br>
+                 {% if not user.is_subscribe %}
+                     <a href="{% url 'pay_create' %}">{{locale.continue_sub}}</a>
+                     {% if not user.is_trial_used %}
+                        <a href="{% url 'pay_trial' %}">{{locale.trial}}</a>
+                     {% endif %}
+                 {% else %}
+                 <a href="{% url 'index' %}">{{locale.home}}</a>
+                  {% endif %}
+              </form>
+          </div>
+         <div style="width: 40vw;">
+            {% if language == 'ru' %}
+            <p style="font-size: 18px;">
+               Сайт предназначен для тех, кто начинает изучать и уже изучает иврит.
+            </p>
+            <p style="font-size: 18px;">
+               Спряжения глаголов содержащих один и тот же корень, реализуются в пределах от 1 до 7 биньянов и у пользователя есть возможность открывать биньяны этих глаголов, а также открывать таблицы спряжения глаголов отдельно по временам
+            </p>
+            <p style="font-size: 18px;">
+               В ячейку ввода слов, введите корень или любую глагольную форму, в настоящем прошедшем или будущем времени, откроется группа корней глаголов, которые спрягаются по одной и той же схеме
+            </p>
+            {% elif language == 'ua' %}
+            <p style="font-size: 18px;">
+               Сайт призначений для тих, хто починає вивчати та вже вивчає іврит.
+            </p>
+            <p style="font-size: 18px;">
+               Відмінювання дієслів містять один і той же корінь, реалізуються в межах від 1 до 7 біньян і у користувача є можливість відкривати біньяни цих дієслів, а також відкривати таблиці відмінювання дієслів окремо за часом
+            </p>
+            <p style="font-size: 18px;">
+               В комірку введення слів, введіть корінь або будь-яку дієслівну форму, в минулому або майбутньому часі, відкриється група коренів дієслів, які відмінюються за однією і тією ж схемою
+            </p>
+            {% elif language == 'en' %}
+            <p style="font-size: 18px;">
+               The site is intended for those who are beginning to study and are already learning Hebrew.
+            </p>
+            <p style="font-size: 18px;">
+               Conjugations of verbs containing the same root are implemented in the range from 1 to 7 binyans and the user has the opportunity to open binyans of these verbs, as well as open verb conjugation tables separately by tense
+            </p>
+            <p style="font-size: 18px;">
+               In the word entry cell, enter a root or any verb form, in the present past or future tense, a group of verb roots will open that are conjugated according to the same pattern
+            </p>
+            {% endif %}
+         </div>
+      </div>
+   </div>
+</blockquote>
+
+   </body>
+{% endblock %}
