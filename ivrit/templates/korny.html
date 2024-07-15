@@ -1,42 +1,6 @@
-﻿<html>
-   <head>
-      <style type="text/css">
-         .input-container {
-             position: relative;
-             display: inline-block;
-         }
+﻿{% extends 'includes/base.html' %}
 
-         input[type="text"] {
-             padding-right: 24px;
-         }
-
-         .clear-button {
-             position: absolute;
-             right: 8px;
-             top: 50%;
-             transform: translateY(-50%);
-             cursor: pointer;
-         }
-
-         input[type="text"]:not(:placeholder-shown) + .clear-button {
-             display: block;
-         }
-
-         p {font-size:30px; font-family: David; margin: 0;}
-         form {margin-block-end: 0;}
-
-         p.pink{font-size:16px; font-family: David;}
-         p.ivrit{font-size:20px; font-family: David;}
-         a{ text-decoration:none; }
-         <p class="pink" align="center">
-         <p class="pink">
-            &nbsp;&nbs
-            <font color="red"></font>
-            <a name="">
-            <font><a href="#1"style="text-decoration:none"></a></font>
-      </style>
-      <style type="text/css" id="operaUserStyle"></style>
-   </head>
+{% block 'content' %}
    <body>
 <blockquote>
    <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 50px;">
@@ -67,7 +31,7 @@
                </p>
                <form action="" method="GET">
                   <div class="input-container">
-                       <input style="width: 300px; height: 30px;" id="rootInput" type="text" name="root" placeholder="{{locale.input}}" value="{{input_word}}">
+                       <input style="width: 300px; height: 30px;" id="rootInput" type="text" name="input_root" placeholder="{{locale.input}}" value="{{input_root}}">
                        <span id="clearButton" class="clear-button">&times;</span>
                    </div>
                   <input type="hidden" name="group_filter" value="{{chosen_filter}}">
@@ -228,7 +192,7 @@
             {% endfor %}
          </div>
          {% endif %}
-         <div style="max-height: 90vh; overflow-y: scroll; width: 200px;">
+         <div id="root_div" style="max-height: 90vh; overflow-y: scroll; width: 200px;">
             <p class="pink" align="center">
                <strong>
 <!--                  <font color="red">-->
@@ -247,7 +211,11 @@
                </strong>
             </p>
             {% if chosen_root %}
-            <p align="center"><strong><font color="red">{{chosen_root}}</font></strong><strong></strong></p>
+            <p id="chosen_root" align="center">
+               <strong id="chosen_root">
+                  <font color="red" id="chosen_root">{{chosen_root}}</font>
+               </strong>
+            </p>
             {% endif %}
             {{group}}
             {% if chosen_filter == 'number' and chosen_root.group == 100000 %}
@@ -266,7 +234,7 @@
             {% else %}
                {% for root in roots %}
                <p align="center"><strong>
-                  <a href="{% url 'index' %}?root={{root}}&group_filter={{chosen_filter}}&r_filter={{r_filter}}" style="color: black;">
+                  <a href="{% url 'index' %}?root={{root}}&group_filter={{chosen_filter}}&r_filter={{r_filter}}&input_root={{input_root}}" style="color: black;">
                      {{root}}
                   </a>
                   </strong>
@@ -277,33 +245,15 @@
          <div style="width: 200px;">
             {% if language == 'ru' %}
             <p style="font-size: 18px;">
-               Сайт предназначен для тех, кто начинает изучать и уже изучает иврит.
-            </p>
-            <p style="font-size: 18px;">
-               Спряжения глаголов содержащих один и тот же корень, реализуются в пределах от 1 до 7 биньянов и у пользователя есть возможность открывать биньяны этих глаголов, а также открывать таблицы спряжения глаголов отдельно по временам
-            </p>
-            <p style="font-size: 18px;">
-               В ячейку ввода слов, введите корень или любую глагольную форму, в настоящем прошедшем или будущем времени, откроется группа корней глаголов, которые спрягаются по одной и той же схеме
+               {{settings.text_ru}}
             </p>
             {% elif language == 'ua' %}
             <p style="font-size: 18px;">
-               Сайт призначений для тих, хто починає вивчати та вже вивчає іврит.
-            </p>
-            <p style="font-size: 18px;">
-               Відмінювання дієслів містять один і той же корінь, реалізуються в межах від 1 до 7 біньян і у користувача є можливість відкривати біньяни цих дієслів, а також відкривати таблиці відмінювання дієслів окремо за часом
-            </p>
-            <p style="font-size: 18px;">
-               В комірку введення слів, введіть корінь або будь-яку дієслівну форму, в минулому або майбутньому часі, відкриється група коренів дієслів, які відмінюються за однією і тією ж схемою
+               {{settings.text_ua}}
             </p>
             {% elif language == 'en' %}
             <p style="font-size: 18px;">
-               The site is intended for those who are beginning to study and are already learning Hebrew.
-            </p>
-            <p style="font-size: 18px;">
-               Conjugations of verbs containing the same root are implemented in the range from 1 to 7 binyans and the user has the opportunity to open binyans of these verbs, as well as open verb conjugation tables separately by tense
-            </p>
-            <p style="font-size: 18px;">
-               In the word entry cell, enter a root or any verb form, in the present past or future tense, a group of verb roots will open that are conjugated according to the same pattern
+               {{settings.text_en}}
             </p>
             {% endif %}
          </div>
@@ -314,14 +264,22 @@
    </body>
 
    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-       const inputField = document.getElementById('rootInput');
-       const clearButton = document.getElementById('clearButton');
+    function scrollToText(containerId, text) {
+      const container = document.getElementById(containerId);
+      const elements = container.getElementsByTagName('*');
 
-       clearButton.addEventListener('click', () => {
-           inputField.value = '';
-           inputField.focus();
-       });
-   });
-   </script>
-</html>
+      for (let element of elements) {
+         if (element.id === 'chosen_root') {
+            continue;
+        }
+
+        if (element.textContent.trim() === text) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          break;
+        }
+      }
+    }
+
+    scrollToText('root_div', '{{chosen_root}}');
+  </script>
+{% endblock %}

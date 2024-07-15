@@ -1,6 +1,28 @@
 from django.db import models
 
 
+class Setting(models.Model):
+    key_words = models.TextField('Ключевые слова', blank=True)
+    text_ru = models.TextField('Текст (RU)', blank=True)
+    text_ua = models.TextField('Текст (UA)', blank=True)
+    text_en = models.TextField('Текст (EN)', blank=True)
+
+    class Meta:
+        verbose_name = 'Настройки'
+        verbose_name_plural = 'Настройки'
+
+    def __str__(self):
+        return 'Настройки'
+
+    @staticmethod
+    def get_settings():
+        settings = Setting.objects.filter().first()
+        if not settings:
+            settings = Setting()
+            settings.save()
+        return settings
+
+
 class Vocabulary(models.Model):
     root = models.CharField(max_length=255)
     link = models.CharField(max_length=255)

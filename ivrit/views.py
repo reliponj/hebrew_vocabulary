@@ -8,6 +8,9 @@ from ivrit.models import Vocabulary, Root, RCategory, Spisok1
 
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+
     if request.method == 'POST':
         user = authenticate(request, username=request.POST['email'], password=request.POST['password'])
 
@@ -26,6 +29,9 @@ def logout(request):
 
 
 def sign_up(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+
     if request.method == 'POST':
         user = User.objects.filter(email=request.POST['email'])
         if not user:
@@ -54,14 +60,18 @@ def index(request):
 
     roots = Root.objects.filter(root__icontains='.').order_by('root')
     root = request.GET.get('root')
+    input_root = request.GET.get('input_root', '')
     if not root:
-        root = roots[0].root
+        if input_root:
+            root = input_root
+        else:
+            root = roots[0].root
 
     binyan = request.GET.get('binyan', None)
     chosen_root, chosen_word = get_root(root)
     if not chosen_root:
-        return
-    if not binyan:
+        chosen_binyan = None
+    elif not binyan:
         chosen_binyan = chosen_root.binyans.filter().first()
     else:
         chosen_binyan = chosen_root.binyans.filter(binyan=binyan).first()
@@ -94,6 +104,7 @@ def index(request):
         "chosen_word": chosen_word,
         "chosen_binyan": chosen_binyan,
         "input_word": root,
+        "input_root": input_root,
 
         "r_categories": r_categories,
         "modal": modal,
@@ -108,14 +119,14 @@ def get_root(root):
         if not spisok:
             spisok = Spisok1.objects.filter(words=root)
             if not spisok:
-                return None
+                return None, None
 
     spisok = spisok.first()
     result_word = spisok.word
 
     root = Root.objects.filter(root=spisok.roots)
     if not root:
-        return None
+        return None, None
     root = root.first()
     return root, result_word
 

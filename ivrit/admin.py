@@ -1,6 +1,14 @@
 from django.contrib import admin
+from django.shortcuts import redirect
 
-from ivrit.models import Root, Vocabulary, Spisok6, RCategory, Spisok1, Binyan, Group
+from ivrit.models import Root, Vocabulary, Spisok6, RCategory, Spisok1, Binyan, Group, Setting
+
+
+@admin.register(Setting)
+class SettingAdmin(admin.ModelAdmin):
+    def changelist_view(self, request, extra_context=None):
+        settings = Setting.get_settings()
+        return redirect(request.path + f'{settings.id}/')
 
 
 @admin.register(Vocabulary)

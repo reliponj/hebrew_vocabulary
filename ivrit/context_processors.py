@@ -1,3 +1,6 @@
+from ivrit.models import Setting
+
+
 def context_controller(request):
     language = request.GET.get('language', 'ru')
     locales = {
@@ -61,8 +64,11 @@ def context_controller(request):
         }
     }
 
+    settings = Setting.get_settings()
+
     context = {
         'locale': locales[language],
         "language": language,
+        "settings": settings,
     }
     return context

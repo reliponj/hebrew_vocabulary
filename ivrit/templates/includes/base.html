@@ -1,0 +1,56 @@
+<html>
+   <head>
+      <style type="text/css">
+         .input-container {
+             position: relative;
+             display: inline-block;
+         }
+
+         input[type="text"] {
+             padding-right: 24px;
+         }
+
+         .clear-button {
+             position: absolute;
+             right: 8px;
+             top: 50%;
+             transform: translateY(-50%);
+             cursor: pointer;
+         }
+
+         input[type="text"]:not(:placeholder-shown) + .clear-button {
+             display: block;
+         }
+
+         p {font-size:30px; font-family: David; margin: 0;}
+         form {margin-block-end: 0;}
+
+         p.pink{font-size:16px; font-family: David;}
+         p.ivrit{font-size:20px; font-family: David;}
+         a{ text-decoration:none; }
+         <p class="pink" align="center">
+         <p class="pink">
+            &nbsp;&nbs
+            <font color="red"></font>
+            <a name="">
+            <font><a href="#1"style="text-decoration:none"></a></font>
+      </style>
+      <style type="text/css" id="operaUserStyle"></style>
+
+       <meta name="title" content="{{locale.site_name}}">
+      <meta name="description" content="{{settings.text_ru}}">
+      <meta name="keywords" content="{{settings.key_words}}">
+   </head>
+   {% block 'content' %}{% endblock%}
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+       const inputField = document.getElementById('rootInput');
+       const clearButton = document.getElementById('clearButton');
+
+       clearButton.addEventListener('click', () => {
+           inputField.value = '';
+           inputField.focus();
+       });
+   });
+   </script>
+</html>
