@@ -80,7 +80,7 @@ def index(request):
         chosen_binyan = chosen_root.binyans.filter(binyan=binyan).first()
 
     scroll_to_root = False
-    if chosen_filter == 'number':
+    if chosen_filter == 'number' and chosen_root:
         if not request.GET.get('root') and not request.GET.get('input_root'):
             roots = roots.order_by('number')
         else:
