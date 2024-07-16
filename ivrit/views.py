@@ -71,7 +71,7 @@ def index(request):
             root = roots[0].root
 
     binyan = request.GET.get('binyan', None)
-    chosen_root, chosen_word = get_root(root)
+    chosen_root, chosen_word = get_root(root, chosen_filter)
     if not chosen_root:
         chosen_binyan = None
     elif not binyan:
@@ -118,7 +118,7 @@ def index(request):
     return render(request, 'korny.html', context=context)
 
 
-def get_root(root):
+def get_root(root, group_filter):
     spisok = Spisok1.objects.filter(word=root)
     if not spisok:
         spisok = Spisok1.objects.filter(roots=root)
@@ -128,7 +128,10 @@ def get_root(root):
                 return None, None
 
     spisok = spisok.first()
-    result_word = spisok.word
+
+    result_word = ''
+    if group_filter != 'number':
+        result_word = spisok.word
 
     root = Root.objects.filter(root=spisok.roots)
     if not root:
