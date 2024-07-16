@@ -88,7 +88,8 @@ def index(request):
             if not group:
                 roots = []
             else:
-                scroll_to_root = True
+                if request.GET.get('root'):
+                    scroll_to_root = True
                 roots = roots.filter(groups__in=[group]).order_by('number')
 
     if not chosen_binyan:
