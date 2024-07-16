@@ -271,6 +271,7 @@
 
    </body>
 
+   {% if scroll_to_root %}
    <script>
     function scrollToText(containerId, text) {
       const container = document.getElementById(containerId);
@@ -282,7 +283,7 @@
         }
 
         if (element.textContent.trim() === text) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element.scrollIntoView({ block: 'start' });
           break;
         }
       }
@@ -290,4 +291,5 @@
 
     scrollToText('root_div', '{{chosen_root}}');
   </script>
+   {% endif %}
 {% endblock %}

@@ -61,6 +61,7 @@ def index(request):
     modal = request.GET.get('modal', None)
 
     roots = Root.objects.filter(root__icontains='.').order_by('root')
+    roots = roots.filter(~Q(groups=None))
     root = request.GET.get('root')
     input_root = request.GET.get('input_root', '')
     if not root:
@@ -78,14 +79,16 @@ def index(request):
     else:
         chosen_binyan = chosen_root.binyans.filter(binyan=binyan).first()
 
+    scroll_to_root = False
     if chosen_filter == 'number':
         if not request.GET.get('root'):
-            roots = roots.filter(~Q(groups=None)).order_by('number')
+            roots = roots.order_by('number')
         else:
             group = chosen_root.groups.filter().first()
             if not group:
                 roots = []
             else:
+                scroll_to_root = True
                 roots = roots.filter(groups__in=[group]).order_by('number')
 
     if not chosen_binyan:
@@ -110,6 +113,7 @@ def index(request):
 
         "r_categories": r_categories,
         "modal": modal,
+        "scroll_to_root": scroll_to_root,
     }
     return render(request, 'korny.html', context=context)
 

@@ -7,10 +7,6 @@ from ivrit.models import Vocabulary, Root, Binyan, Spisok6, Group
 def import_vocabulary():
     vocabulary = Vocabulary.objects.filter()
 
-    Group.objects.all().delete()
-    Root.objects.all().delete()
-    Binyan.objects.all().delete()
-
     roots = {}
     for v in vocabulary:
         if not v.link:
@@ -58,8 +54,47 @@ def import_spisok_6():
         root.save()
 
 
-class Command(BaseCommand):
+def import_roots_new():
+    Group.objects.all().delete()
+    Root.objects.all().delete()
+    Binyan.objects.all().delete()
 
+    spisok6 = Spisok6.objects.filter()
+    for spisok in spisok6:
+        root = Root(
+            root=spisok.roots,
+            number=spisok.tables)
+        root.save()
+
+        group_name = spisok.tables_2.split('-')[0]
+        group = Group.objects.filter(group=group_name)
+        if not group:
+            group = Group(group=group_name)
+            group.save()
+        else:
+            group = group.first()
+        group.roots.add(root)
+
+
+def import_vocabulary_new():
+    vocabulary = Vocabulary.objects.filter()
+
+    for v in vocabulary:
+        if not v.link:
+            continue
+
+        root = Root.objects.filter(root=v.root).first()
+        if not root:
+            continue
+
+        if v.binyan:
+            binyan_obj = Binyan(root=root, binyan=v.binyan, link=v.link)
+            binyan_obj.save()
+
+
+class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        import_vocabulary()
-        import_spisok_6()
+        import_roots_new()
+        import_vocabulary_new()
+        # import_vocabulary()
+        # import_spisok_6()
