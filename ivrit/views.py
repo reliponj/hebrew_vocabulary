@@ -98,6 +98,10 @@ def index(request):
     else:
         r_categories, infinitive = get_sub_data(chosen_root, chosen_binyan, r_filter, language)
 
+    infinitive_size = 16
+    if len(infinitive) > 10:
+        infinitive_size = 12
+
     context = {
         "chosen_filter": chosen_filter,
         "r_filter": r_filter,
@@ -105,6 +109,7 @@ def index(request):
         "roots": roots,
         "language": language,
         "infinitive": infinitive,
+        "infinitive_size": infinitive_size,
 
         "chosen_root": chosen_root,
         "chosen_word": chosen_word,
