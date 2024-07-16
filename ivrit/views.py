@@ -81,7 +81,7 @@ def index(request):
 
     scroll_to_root = False
     if chosen_filter == 'number':
-        if not request.GET.get('root'):
+        if not root:
             roots = roots.order_by('number')
         else:
             group = chosen_root.groups.filter().first()
