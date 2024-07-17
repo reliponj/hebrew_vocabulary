@@ -85,7 +85,10 @@ def import_vocabulary_new():
 
         root = Root.objects.filter(root=v.root).first()
         if not root:
-            continue
+            root = Root(
+                root=v.root,
+                number=100000)
+            root.save()
 
         if v.binyan:
             binyan_obj = Binyan(root=root, binyan=v.binyan, link=v.link)
