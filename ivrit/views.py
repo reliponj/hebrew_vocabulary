@@ -187,7 +187,7 @@ def get_sub_data(chosen_root, chosen_binyan, r_filter, language):
             category.word = found.first().words
             category.word_simple = found.first().word
             category.word_size = 30
-            if len(category.word_simple) > 7:
+            if len(category.word_simple) > 5:
                 category.word_size = 24
         else:
             category.word = ''
