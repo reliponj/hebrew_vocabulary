@@ -188,9 +188,9 @@
             <div style="display: flex; align-items: center;">
                <div style="width: 110px;">
                   {% if chosen_word == category.word_simple %}
-                  <p align="right" style="color: red; margin-right: 10px; font-size: {{words_size}}px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
+                  <p align="right" style="color: red; margin-right: 10px; font-size: {{category.word_size}}px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
                   {% else %}
-                  <p align="right" style="margin-right: 10px; font-size: {{words_size}}px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
+                  <p align="right" style="margin-right: 10px; font-size: {{category.word_size}}px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
                   {% endif %}
                </div>
                <div style="width: 130px;">
