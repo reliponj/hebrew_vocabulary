@@ -99,8 +99,13 @@ def index(request):
         r_categories, infinitive = get_sub_data(chosen_root, chosen_binyan, r_filter, language)
 
     infinitive_size = 16
-    if len(infinitive) > 10:
+    if infinitive and len(infinitive) > 10:
         infinitive_size = 12
+
+    words_size = 30
+    for cat in r_categories:
+        if len(cat.word_simple) > 8:
+            words_size = 24
 
     context = {
         "chosen_filter": chosen_filter,
@@ -110,6 +115,7 @@ def index(request):
         "language": language,
         "infinitive": infinitive,
         "infinitive_size": infinitive_size,
+        'words_size': words_size,
 
         "chosen_root": chosen_root,
         "chosen_word": chosen_word,
@@ -186,6 +192,9 @@ def get_sub_data(chosen_root, chosen_binyan, r_filter, language):
         if found:
             category.word = found.first().words
             category.word_simple = found.first().word
+        else:
+            category.word = ''
+            category.word_simple = ''
 
     slovar = Vocabulary.objects.filter(root=chosen_root.root, binyan=chosen_binyan.binyan)
     if not slovar:

@@ -167,7 +167,7 @@
             {% endif %}
          </div>
          {% else %}
-         <div style="max-height: 90vh; overflow-y: scroll; width: 250px;">
+         <div style="max-height: 85vh; overflow-y: scroll; width: 250px;">
             <div style="display: flex; align-items: center;">
                <div style="width: 110px;">
                   <p align="right" style="margin-right: 10px;"><strong>{{chosen_binyan}}&nbsp;&nbsp;</strong></p>
@@ -188,9 +188,9 @@
             <div style="display: flex; align-items: center;">
                <div style="width: 110px;">
                   {% if chosen_word == category.word_simple %}
-                  <p align="right" style="color: red; margin-right: 10px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
+                  <p align="right" style="color: red; margin-right: 10px; font-size: {{words_size}}px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
                   {% else %}
-                  <p align="right" style="margin-right: 10px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
+                  <p align="right" style="margin-right: 10px; font-size: {{words_size}}px;"><strong>{{category.word}}&nbsp;&nbsp;</strong></p>
                   {% endif %}
                </div>
                <div style="width: 130px;">
@@ -200,7 +200,7 @@
             {% endfor %}
          </div>
          {% endif %}
-         <div id="root_div" style="max-height: 90vh; overflow-y: scroll; width: 200px;">
+         <div id="root_div" style="max-height: 85vh; overflow-y: scroll; width: 200px;">
             <p class="pink" align="center">
                <strong>
 <!--                  <font color="red">-->
@@ -252,16 +252,16 @@
          </div>
          <div style="width: 200px;">
             {% if language == 'ru' %}
-            <p style="font-size: 18px;">
-               {{settings.text_ru}}
+            <p style="font-size: 12px;">
+               {{settings.text_ru|safe}}
             </p>
             {% elif language == 'ua' %}
-            <p style="font-size: 18px;">
-               {{settings.text_ua}}
+            <p style="font-size: 12px;">
+               {{settings.text_ua|safe}}
             </p>
             {% elif language == 'en' %}
-            <p style="font-size: 18px;">
-               {{settings.text_en}}
+            <p style="font-size: 12px;">
+               {{settings.text_en|safe}}
             </p>
             {% endif %}
          </div>
