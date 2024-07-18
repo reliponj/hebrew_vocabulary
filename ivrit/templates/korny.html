@@ -39,7 +39,7 @@
                </p>
                <form action="" method="GET">
                   <div class="input-container">
-                       <input style="width: 300px; height: 30px;" id="rootInput" type="text" name="input_root" placeholder="{{locale.input}}" value="{{input_root}}">
+                       <input style="width: 230px; height: 30px;" id="rootInput" type="text" name="input_root" placeholder="{{locale.input}}" value="{{input_root}}">
                        <span id="clearButton" class="clear-button">&times;</span>
                    </div>
                   <input type="hidden" name="group_filter" value="{{chosen_filter}}">
@@ -206,16 +206,23 @@
 <!--                  <font color="red">-->
 <!--                     {{locale.all_groups}}-->
 <!--                  </font>-->
-                  {% if chosen_filter == 'root' %}
-                  {% else %}
-                  {% endif %}
+                  {% if chosen_filter == 'all' %}
                   <font>
-                     <a href="{% url 'index' %}?group_filter=all">{{locale.all_groups}}</a>
+                     <a style="color: red;">{{locale.all_groups}}</a>
                   </font>
                   /
                   <font>
                      <a href="{% url 'index' %}?group_filter=number">{{locale.by_groups}}</a>
                   </font>
+                  {% else %}
+                  <font>
+                     <a href="{% url 'index' %}?group_filter=all">{{locale.all_groups}}</a>
+                  </font>
+                  /
+                  <font>
+                     <a style="color: red;">{{locale.by_groups}}</a>
+                  </font>
+                  {% endif %}
                </strong>
             </p>
             {% if chosen_root %}
@@ -250,7 +257,7 @@
                {% endfor %}
             {% endif %}
          </div>
-         <div style="width: 200px;">
+         <div style="width: 300px;">
             {% if language == 'ru' %}
             <p style="font-size: 12px;">
                {{settings.text_ru|safe}}

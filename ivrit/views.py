@@ -55,20 +55,24 @@ def index(request):
     if not request.user.is_subscribe:
         return redirect('pay_status')
 
-    chosen_filter = request.GET.get('group_filter', 'root')
+    chosen_filter = request.GET.get('group_filter', 'all')
     r_filter = request.GET.get('r_filter', 'all')
     language = request.GET.get('language', 'ru')
     modal = request.GET.get('modal', None)
 
     roots = Root.objects.filter(root__icontains='.').order_by('root')
     roots = roots.filter(~Q(groups=None))
+
     root = request.GET.get('root')
     input_root = request.GET.get('input_root', '')
     if not root:
         if input_root:
             root = input_root
         else:
-            root = roots[0].root
+            if chosen_filter == 'all':
+                root = roots[0].root
+            else:
+                root = roots.order_by('number')[0]
 
     binyan = request.GET.get('binyan', None)
     chosen_root, chosen_word = get_root(root, chosen_filter)

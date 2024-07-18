@@ -20,7 +20,7 @@ def context_controller(request):
             "by_groups": "по групам",
 
             "find": "Найти",
-            "input": "Введите корень или глагольную форму",
+            "input": "Введите корень или глагол",
 
             "login_account": "Войти в аккаунт",
             "enter_email": "Введите email",
@@ -55,7 +55,27 @@ def context_controller(request):
             "all_groups": "всі",
             "by_groups": "за групами",
             "find": "Знайти",
-            "input": "Введіть корінь або дієслівну форму",
+            "input": "Введіть корінь або дієслово",
+
+            "login_account": "Увійти до облікового запису",
+            "enter_email": "Введіть email",
+            "enter_password": "Введіть пароль",
+            "sign_up": "Немає облікового запису? Реєстрація",
+
+            "sign_up_account": "Реєстрація",
+            "login": "Є акаунт? Увійти",
+            "login_enter": "Увійти",
+            "logout": "Вийти",
+
+            "subscription_status": "Статус підписки",
+            "status_sub": "Статус: Активна",
+            "status_not_sub": "Статус: Неактивна",
+            "active_to": "Активна до",
+            "continue_sub": "Продовжити",
+            "trial": 'Спробувати 30 днів безкоштовно',
+            "home": "На головну",
+
+            "manage_sub": "Керувати підпискою"
         },
         "en": {
             "site_name": "Verb Roots",
@@ -70,7 +90,27 @@ def context_controller(request):
             "all_groups": "all",
             "by_groups": "by groups",
             "find": "Find",
-            "input": "Enter root or verb form",
+            "input": "Enter root or verb",
+
+            "login_account": "Login to account",
+            "enter_email": "Enter email",
+            "enter_password": "Enter password",
+            "sign_up": "No account? Register",
+
+            "sign_up_account": "Registration",
+            "login": "Have an account? Log in",
+            "login_enter": "Login",
+            "logout": "Logout",
+
+            "subscription_status": "Subscription status",
+            "status_sub": "Status: Active",
+            "status_not_sub": "Status: Inactive",
+            "active_to": "Active to",
+            "continue_sub": "Continue",
+            "trial": 'Try 30 days free',
+            "home": "Home",
+
+            "manage_sub": "Manage subscription"
         }
     }
 
