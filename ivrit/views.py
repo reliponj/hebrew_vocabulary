@@ -1,10 +1,10 @@
 from django.contrib import auth
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from ivrit.models import Vocabulary, Root, RCategory, Spisok1
+from user.models import User
 
 
 def login(request):
