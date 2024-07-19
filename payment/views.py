@@ -9,13 +9,6 @@ from ivrit.models import Setting
 from payment.models import Payment
 
 
-def status(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-
-    return render(request, 'payment_status.html')
-
-
 def create(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -32,18 +25,18 @@ def create(request):
     return redirect(url)
 
 
-def trial(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-
-    if request.user.is_trial_used:
-        return redirect('index')
-
-    request.user.is_trial_used = True
-    request.user.sub_date = timezone.now() + timedelta(days=30)
-    request.user.is_subscribe = True
-    request.user.save()
-    return redirect('index')
+# def trial(request):
+#     if not request.user.is_authenticated:
+#         return redirect('login')
+#
+#     if request.user.is_trial_used:
+#         return redirect('index')
+#
+#     request.user.is_trial_used = True
+#     request.user.sub_date = timezone.now() + timedelta(days=30)
+#     request.user.is_subscribe = True
+#     request.user.save()
+#     return redirect('index')
 
 
 def callback(request):
@@ -60,11 +53,9 @@ def callback(request):
     user = payment.user
     if data['status'] == 1 and payment.status != 'success':
         payment.status = 'success'
-        user.sub_date = timezone.now() + timedelta(days=30)
         user.is_subscribe = True
     elif data['status'] == 3 and payment.status != 'refund':
         payment.status = 'refund'
-        user.sub_date = timezone.now() - timedelta(days=30)
         user.is_subscribe = False
 
     user.save()

@@ -1,59 +1,15 @@
-from django.contrib import auth
-from django.contrib.auth import authenticate
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from ivrit.models import Vocabulary, Root, RCategory, Spisok1
-from user.models import User
-
-
-def login(request):
-    if request.user.is_authenticated:
-        return redirect('index')
-
-    if request.method == 'POST':
-        user = authenticate(request, username=request.POST['email'], password=request.POST['password'])
-
-        if not user:
-            return render(request, 'login.html')
-        else:
-            auth.login(request, user)
-            return redirect('index')
-
-    return render(request, 'login.html')
-
-
-def logout(request):
-    auth.logout(request)
-    return redirect('login')
-
-
-def sign_up(request):
-    if request.user.is_authenticated:
-        return redirect('index')
-
-    if request.method == 'POST':
-        user = User.objects.filter(email=request.POST['email'])
-        if not user:
-            user = User.objects.create_user(request.POST['email'],
-                                            request.POST['email'],
-                                            request.POST['password'])
-            auth.login(request, user)
-            return redirect('index')
-        else:
-            user = authenticate(request, username=request.POST['email'], password=request.POST['password'])
-            if user:
-                auth.login(request, user)
-                return redirect('index')
-
-    return render(request, 'sign_up.html')
 
 
 def index(request):
     if not request.user.is_authenticated:
-        return redirect('login')
-    if not request.user.is_subscribe:
-        return redirect('pay_status')
+        return redirect('welcome')
+
+    if not request.user.is_sub_active():
+        return redirect('profile')
 
     chosen_filter = request.GET.get('group_filter', 'all')
     r_filter = request.GET.get('r_filter', 'all')

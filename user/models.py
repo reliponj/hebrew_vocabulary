@@ -1,5 +1,8 @@
+import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -18,3 +21,11 @@ class User(AbstractUser):
         if not self.sub_date:
             return '-'
         return self.sub_date.strftime('%d.%m.%Y')
+
+    def is_sub_active(self):
+        if self.is_subscribe:
+            return True
+
+        now = timezone.now()
+        if self.sub_date >= datetime.date(day=now.day, month=now.month, year=now.year):
+            return True

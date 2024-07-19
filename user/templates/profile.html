@@ -26,24 +26,23 @@
                   {% endif %}
                   <br>
                </p>
+             {% if not user.is_sub_active %}
+             <div>
+                <h1>{{locale.sub_expired}}</h1>
+                <a href="{% url 'pay_create' %}">{{locale.buy}}</a>
+             </div>
+             {% endif %}
               <form action="" method="POST" style="display: flex; flex-direction: column;">
                  {% csrf_token %}
-                  <h1>{{locale.subscription_status}}</h1>
-                     {% if user.is_subscribe %}
-                     <p style="font-size: 16px;">{{locale.status_sub}}</p>
-                     {% else %}
-                     <p style="font-size: 16px;">{{locale.status_not_sub}}</p>
-                     {% endif %}
-                     <p style="font-size: 16px;">{{locale.active_to}}: {{user.get_sub_date}}</p>
-                 <br>
-                 {% if not user.is_subscribe %}
-                     <a href="{% url 'pay_create' %}">{{locale.continue_sub}}</a>
-                     {% if not user.is_trial_used %}
-                        <a href="{% url 'pay_trial' %}">{{locale.trial}}</a>
-                     {% endif %}
-                 {% else %}
+                  <h1>{{locale.profile_change}}</h1>
+                  <input name="email" type="email" placeholder="{{locale.enter_email}}" value="{{user.email}}">
+                  <div style="height: 10px;"></div>
+                  <input name="password" type="password" placeholder="{{locale.enter_password}}">
+                  <div style="height: 10px;"></div>
+                  <button type="submit">{{locale.change}}</button>
+                 <div style="height: 10px;"></div>
+                 <a href="{% url 'logout' %}">{{locale.logout}}</a>
                  <a href="{% url 'index' %}">{{locale.home}}</a>
-                  {% endif %}
               </form>
           </div>
          <div style="width: 40vw;">

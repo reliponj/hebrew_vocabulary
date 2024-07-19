@@ -8,18 +8,16 @@
          <div>
             <div>
                <div>
-                  {{user.email}}
-                  /
-                  <a href="{% url 'logout' %}">{{locale.logout}}</a>
+                  <a href="{% url 'profile' %}">{{locale.profile}}</a>
                </div>
                <div>
-                  {% if user.is_subscribe %}
-                  {{locale.status_sub}}
-                  {% else %}
-                  {{locale.status_not_sub}}
+                  {% if not user.is_subscribe and user.is_sub_active %}
+                  {{locale.free_until}} {{user.get_sub_date}} / <a href="{% url 'pay_create' %}">{{locale.buy}}</a>
                   {% endif %}
-                  /
-                  <a href="{% url 'pay_status' %}">{{locale.manage_sub}}</a>
+
+                  {% if user.is_subscribe %}
+                  {{locale.you_subscribe}}
+                  {% endif %}
                </div>
                <p class="pink" align="right">
                   <strong>

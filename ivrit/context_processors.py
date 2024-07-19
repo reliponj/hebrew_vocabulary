@@ -40,7 +40,17 @@ def context_controller(request):
             "trial": 'Попробовать 30 дней бесплатно',
             "home": "На главную",
 
-            "manage_sub": "Управлять подпиской"
+            "manage_sub": "Управлять подпиской",
+
+            "profile_change": "Изменить профиль",
+            "change": "Изменить",
+
+            "profile": "Профиль",
+            "you_subscribe": "Вы купили доступ",
+            "buy": "Купить",
+            "free_until": "Бесплатно до",
+            "welcome": "Корни иврита",
+            "sub_expired": "Ваш пробный период истек!",
         },
         "ua": {
             "site_name": "Корені дієслів",
@@ -75,7 +85,17 @@ def context_controller(request):
             "trial": 'Спробувати 30 днів безкоштовно',
             "home": "На головну",
 
-            "manage_sub": "Керувати підпискою"
+            "manage_sub": "Керувати підпискою",
+
+            "profile_change": "Змінити профіль",
+            "change": "Змінити",
+
+            "profile": "Профіль",
+            "you_subscribe": "Ви купили доступ",
+            "buy": "Купити",
+            "free_until": "Безкоштовно до",
+            "welcome": "Коріння івриту",
+            "sub_expired": "Ваш пробний період минув!",
         },
         "en": {
             "site_name": "Verb Roots",
@@ -110,7 +130,17 @@ def context_controller(request):
             "trial": 'Try 30 days free',
             "home": "Home",
 
-            "manage_sub": "Manage subscription"
+            "manage_sub": "Manage subscription",
+
+            "profile_change": "Change profile",
+            "change": "Change",
+
+            "profile": "Profile",
+            "you_subscribe": "You have purchased access",
+            "buy": "Buy",
+            "free_until": "Free until",
+            "welcome": "Hebrew roots",
+            "sub_expired": "Your trial period has expired!",
         }
     }
 
