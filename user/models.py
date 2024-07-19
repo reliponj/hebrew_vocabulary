@@ -27,5 +27,5 @@ class User(AbstractUser):
             return True
 
         now = timezone.now()
-        if self.sub_date >= datetime.date(day=now.day, month=now.month, year=now.year):
+        if self.sub_date and self.sub_date >= datetime.date(day=now.day, month=now.month, year=now.year):
             return True

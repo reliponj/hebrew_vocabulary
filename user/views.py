@@ -12,7 +12,7 @@ def welcome(request):
     if request.user.is_authenticated:
         return redirect('index')
 
-    return render(request, 'welcome.html')
+    return render(request, 'new_welcome.html')
 
 
 def login(request):

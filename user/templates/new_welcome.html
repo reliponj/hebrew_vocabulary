@@ -1,0 +1,605 @@
+﻿{% extends 'includes/base.html' %}
+
+{% block 'content' %}
+   <body>
+<blockquote>
+   <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 50px;">
+      <div style="width: 90vw; display: flex; justify-content: space-between;">
+         <div>
+            <div>
+               <div>
+                  <a href="{% url 'login' %}">{{locale.login}}</a><br>
+                  <a href="{% url 'sign_up' %}">{{locale.sign_up}}</a>
+               </div>
+               <p class="pink" align="right">
+                  <strong>
+                     <font>
+                        <a style="text-decoration:none">
+                           <svg fill="#000000" height="20px" width="20px;" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 	 viewBox="0 0 29.536 29.536" xml:space="preserve"><g>	<path d="M14.768,0C6.611,0,0,6.609,0,14.768c0,8.155,6.611,14.767,14.768,14.767s14.768-6.612,14.768-14.767		C29.535,6.609,22.924,0,14.768,0z M14.768,27.126c-6.828,0-12.361-5.532-12.361-12.359c0-6.828,5.533-12.362,12.361-12.362		c6.826,0,12.359,5.535,12.359,12.362C27.127,21.594,21.594,27.126,14.768,27.126z"/>	<path d="M14.385,19.337c-1.338,0-2.289,0.951-2.289,2.34c0,1.336,0.926,2.339,2.289,2.339c1.414,0,2.314-1.003,2.314-2.339		C16.672,20.288,15.771,19.337,14.385,19.337z"/>	<path d="M14.742,6.092c-1.824,0-3.34,0.513-4.293,1.053l0.875,2.804c0.668-0.462,1.697-0.772,2.545-0.772		c1.285,0.027,1.879,0.644,1.879,1.543c0,0.85-0.67,1.697-1.494,2.701c-1.156,1.364-1.594,2.701-1.516,4.012l0.025,0.669h3.42		v-0.463c-0.025-1.158,0.387-2.162,1.311-3.215c0.979-1.08,2.211-2.366,2.211-4.321C19.705,7.968,18.139,6.092,14.742,6.092z"/>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g>	<g>	</g></g></svg>
+                        </a>
+                     </font>
+                     {{locale.site_name}}
+                  </strong>
+               </p>
+               <form action="" method="GET">
+                  <div class="input-container">
+                       <input disabled style="width: 230px; height: 30px;" id="rootInput" type="text" name="input_root" placeholder="{{locale.input}}" value="{{input_root}}" autocomplete="off">
+                       <span id="clearButton" class="clear-button">&times;</span>
+                   </div>
+                  <button type="submit" style="height: 30px;" disabled>{{locale.find}}</button>
+               </form>
+            </div>
+            <div>
+               <p class="pink" align="right">
+                  {% if language == 'ru' %}
+                  <font color="red"><strong>рус</strong></font>
+                  {% else %}
+                  <a href="{% url 'change_filter' param='language' value='ru' %}">рус</a>
+                  {% endif %}
+                  /
+                  {% if language == 'ua' %}
+                  <font color="red"><strong>укр</strong></font>
+                  {% else %}
+                  <a href="{% url 'change_filter' param='language' value='ua' %}">укр</a>
+                  {% endif %}
+                  /
+                  {% if language == 'en' %}
+                  <font color="red"><strong>eng</strong></font>
+                  {% else %}
+                  <a href="{% url 'change_filter' param='language' value='en' %}">eng</a>
+                  {% endif %}
+                  <br>
+
+                  <strong>{{locale.binyans}}</strong><br>
+
+                  <strong><font color="red">פִּיעֵל</font></strong><br>
+                  <strong><a style="color: black;">פָּעַל</a></strong><br>
+                  <strong><a style="color: black;">נִפעַל</a></strong><br>
+                  <strong><a style="color: black;">הִתפַּעֵל</a></strong><br>
+               </p>
+            </div>
+            <div>
+               <p class="pink" align="right"><strong>{{locale.by_time}}</strong></p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a style="text-decoration:none">{{locale.all_table}}</a>
+                        </font>
+                     </p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a style="text-decoration:none">{{locale.present}}</a>
+                        </font>
+                     </p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a style="text-decoration:none">{{locale.past}}</a>
+                        </font>
+                     </p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a style="text-decoration:none">{{locale.future}}</a>
+                        </font>
+                     </p>
+               <p class="pink" align="right">&nbsp;&nbsp;&nbsp;
+                        <font>
+                           <a style="text-decoration:none">{{locale.naklon}}</a>
+                        </font>
+                     </p>
+            </div>
+         </div>
+
+         <div style="max-height: 85vh; overflow-y: scroll; width: 250px;">
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+                  <p align="right" style="margin-right: 10px;"><strong>פִּיעֵל&nbsp;&nbsp;</strong></p>
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>בִּנייָן</strong><strong></strong></p>
+               </div>
+            </div>
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+                  <p class="pink" align="right" style="font-size: 16px; margin-right: 15px;"><strong>терять&nbsp;&nbsp;</strong></p>
+               </div>
+               <div style="width: 130px;">
+                  <p class="pink" style="font-size: 16px;"><strong>инфинитив&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>לְאַבֵּד&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>שֵם הַפּוֹעַל&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>מְאַבֵּד&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אֲנִי, אַתָה, הוּא&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>מְאַבֶּדֶת&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אֲנִי, אַת, הִיא&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 24px;"><strong>מְאַבּדִים&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אֲנַחנוּ, אַתֶם, הֵם&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 24px;"><strong>מְאַבּדוֹת&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אֲנַחנוּ, אַתֶן, הֵן&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 24px;"><strong>אִיבַּדְתִי&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אֲנִי&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>אִיבַּדְתָ&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַתָה&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>אִיבַּדְת&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַת&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>אִיבֵּד&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>הוּא&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>אִיבּדָה&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>הִיא&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 24px;"><strong>אִיבַּדנוּ&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אֲנַחנוּ&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 24px;"><strong>אִיבַּדְתֶם&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַתֶם&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 24px;"><strong>אִיבַּדְתֶן&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַתֶן&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>אִיבּדוּ&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>הֵם, הֵן&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>אֲאַבֵּד&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אֲנִי&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>תְאַבֵּד&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַתָה&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>תְאַבּדִי&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַת&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>יְאַבֵּד&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>הוּא&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>תְאַבֵּד&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>הִיא&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>נְאַבֵּד&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אֲנַחנוּ&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>תְאַבּדוּ&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַתֶם, אַתֶן&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>יְאַבּדוּ&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>הֵם, הֵן&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="color: red; margin-right: 10px; font-size: 30px;"><strong>אַבֵּד&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַתָה&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>אַבּדִי&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַת&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+               <div style="width: 110px;">
+
+                  <p align="right" style="margin-right: 10px; font-size: 30px;"><strong>אַבּדוּ&nbsp;&nbsp;</strong></p>
+
+               </div>
+               <div style="width: 130px;">
+                  <p class="ivrit"><strong>אַתֶם, אַתֶן&nbsp;&nbsp;</strong></p>
+               </div>
+            </div>
+         </div>
+
+         <div id="root_div" style="max-height: 85vh; overflow-y: scroll; width: 200px;">
+            <p class="pink" align="center">
+               <strong>
+<!--                  <font color="red">-->
+<!--                     все-->
+<!--                  </font>-->
+
+                  <font>
+                     <a style="color: red;">все</a>
+                  </font>
+                  /
+                  <font>
+                     <a>по групам</a>
+                  </font>
+
+               </strong>
+            </p>
+
+            <p id="chosen_root" align="center">
+               <strong id="chosen_root">
+                  <font color="red" id="chosen_root">א.ב.ד.</font>
+               </strong>
+            </p>
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ב.ד.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ב.ח.נ.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ב.ח.נ.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ב.נ.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ב.ק.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ב.ק.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ג.ד.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ג.ר.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ג.ר.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ג.ר.פ.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ד.ה.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ד.מ.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ה.ב.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ה.ב.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ו.צ.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ו.ר.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ו.ר.ר.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ז.כ.ר.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ז.נ.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ז.נ.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ז.נ.
+                  </a>
+                  </strong>
+               </p>
+
+               <p align="center"><strong>
+                  <a style="color: black;">
+                     א.ז.ר.ח.
+                  </a>
+                  </strong>
+               </p>
+            </div>
+
+         <div style="width: 300px;">
+            {% if language == 'ru' %}
+            <p style="font-size: 12px;">
+               {{settings.text_ru|safe}}
+            </p>
+            {% elif language == 'ua' %}
+            <p style="font-size: 12px;">
+               {{settings.text_ua|safe}}
+            </p>
+            {% elif language == 'en' %}
+            <p style="font-size: 12px;">
+               {{settings.text_en|safe}}
+            </p>
+            {% endif %}
+         </div>
+      </div>
+   </div>
+</blockquote>
+
+   </body>
+
+   {% if scroll_to_root %}
+   <script>
+    function scrollToText(containerId, text) {
+      const container = document.getElementById(containerId);
+      const elements = container.getElementsByTagName('*');
+
+      for (let element of elements) {
+         if (element.id === 'chosen_root') {
+            continue;
+        }
+
+        if (element.textContent.trim() === text) {
+          element.scrollIntoView({ block: 'start' });
+          break;
+        }
+      }
+    }
+
+    scrollToText('root_div', '{{chosen_root}}');
+  </script>
+   {% endif %}
+{% endblock %}
