@@ -62,11 +62,18 @@ def index(request):
     if infinitive and len(infinitive) > 10:
         infinitive_size = 12
 
+    check_roots = []
+    new_roots = []
+    for root in roots:
+        if root.root not in check_roots:
+            check_roots.append(root.root)
+            new_roots.append(root)
+
     context = {
         "chosen_filter": chosen_filter,
         "r_filter": r_filter,
 
-        "roots": roots,
+        "roots": new_roots,
         "language": language,
         "infinitive": infinitive,
         "infinitive_size": infinitive_size,

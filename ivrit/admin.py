@@ -24,6 +24,7 @@ class Spisok6Admin(admin.ModelAdmin):
 @admin.register(Spisok1)
 class Spisok1Admin(admin.ModelAdmin):
     list_display = ['roots', 'words', 'word', 'r', 'links']
+    search_fields = ['roots', 'words', 'word']
 
 
 # class BinyanAdmin(admin.TabularInline):
