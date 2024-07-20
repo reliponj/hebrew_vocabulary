@@ -117,34 +117,16 @@
          {% if modal == 'about' %}
          <div style="margin-left: 50px; margin-right: 50px;">
             {% if language == 'ru' %}
-            <p class="pink" align="">Сайт на русском, украинском и английском языках предназначен для тех, кто начинает изучать и уже изучает иврит.
-               <br><br>
-               Главная страница  открывается списком корней в алфавитном порядке и таблицей спряжения глаголов с корнем
-               <font color="red"> <strong>«א.כ.ד.»</strong></font>, который находится в верхней части списка.
-               <br><br>В ячейку ввода слов, введите корень или любую глагольную форму, в настоящем прошедшем или будущем времени, откроется группа корней глаголов, которые спрягаются по одной и той же схеме
-               <br><br>
-               Спряжения глаголов содержащих один и тот же корень, реализуются в пределах от 1 до 7 биньянов и у пользователя есть возможность открывать  биньяны этих глаголов, а также открывать таблицы спряжения глаголов отдельно по временам
-               <br><br>
+            <p class="pink" align="">
+               {{settings.about_ru|safe}}
             </p>
             {% elif language == 'ua' %}
-            <p class="pink" align="">Сайт російською, українською та англійською мовами призначений для тих, хто починає вивчати та вже вивчає іврит.
-               <br><br>
-               Головна сторінка відкривається списком коренів в алфавітному порядку та таблицею відмінювання дієслів з коренем
-               <font color="red"> <strong>«א.כ.ד.»</strong></font>, що знаходиться у верхній частині списку.
-               <br><br>В комірку введення слів, введіть корінь або будь-яку дієслівну форму, в минулому або майбутньому часі, відкриється група коренів дієслів, які відмінюються за однією і тією ж схемою
-               <br><br>
-               Відмінювання дієслів містять один і той же корінь, реалізуються в межах від 1 до 7 біньян і у користувача є можливість відкривати біньяни цих дієслів, а також відкривати таблиці відмінювання дієслів окремо за часом
-               <br><br>
+            <p class="pink" align="">
+               {{settings.about_ua|safe}}
             </p>
             {% elif language == 'en' %}
-            <p class="pink" align="">The site in Russian, Ukrainian and English is intended for those who are beginning to study and are already learning Hebrew.
-               <br><br>
-               The main page opens with a list of roots in alphabetical order and a table of conjugations of verbs with the root
-               <font color="red"> <strong>«א.כ.ד.»</strong></font>, which is at the top of the list.
-               <br><br>In the word entry cell, enter a root or any verb form, in the present past or future tense, a group of verb roots will open that are conjugated according to the same pattern
-               <br><br>
-               Conjugations of verbs containing the same root are implemented in the range from 1 to 7 binyans and the user has the opportunity to open binyans of these verbs, as well as open verb conjugation tables separately by tense
-               <br><br>
+            <p class="pink" align="">
+               {{settings.about_en|safe}}
             </p>
             {% endif %}
          </div>

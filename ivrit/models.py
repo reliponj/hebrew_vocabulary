@@ -6,6 +6,9 @@ class Setting(models.Model):
     text_ru = models.TextField('Текст (RU)', blank=True)
     text_ua = models.TextField('Текст (UA)', blank=True)
     text_en = models.TextField('Текст (EN)', blank=True)
+    about_ru = models.TextField('Справка (RU)', blank=True, default='')
+    about_ua = models.TextField('Справка (UA)', blank=True, default='')
+    about_en = models.TextField('Справка (EN)', blank=True, default='')
     payment_sum = models.IntegerField('Сумма платежа', default=0)
 
     class Meta:

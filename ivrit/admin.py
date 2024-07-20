@@ -14,11 +14,13 @@ class SettingAdmin(admin.ModelAdmin):
 @admin.register(Vocabulary)
 class Vocabulary6Admin(admin.ModelAdmin):
     list_display = ['root', 'link', 'binyan', 'word', 'word_u', 'word_a', 'words1', 'words']
+    search_fields = ['root', 'word', 'word_u', 'word_a', 'words1', 'words']
 
 
 @admin.register(Spisok6)
 class Spisok6Admin(admin.ModelAdmin):
     list_display = ['roots', 'words', 'tables', 'tables_2']
+    search_fields = ['roots', 'words']
 
 
 @admin.register(Spisok1)
