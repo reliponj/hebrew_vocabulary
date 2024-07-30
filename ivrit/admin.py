@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.shortcuts import redirect
 
-from ivrit.models import Root, Vocabulary, Spisok6, RCategory, Spisok1, Binyan, Group, Setting
+from ivrit.models import Root, Vocabulary, Spisok6, RCategory, Spisok1, Binyan, Group, Setting, Kluch
 
 
 @admin.register(Setting)
@@ -11,10 +11,15 @@ class SettingAdmin(admin.ModelAdmin):
         return redirect(request.path + f'{settings.id}/')
 
 
+@admin.register(Kluch)
+class KluchAdmin(admin.ModelAdmin):
+    pass
+
+
 @admin.register(Vocabulary)
 class Vocabulary6Admin(admin.ModelAdmin):
-    list_display = ['root', 'link', 'binyan', 'word', 'word_u', 'word_a', 'words1', 'words']
-    search_fields = ['root', 'word', 'word_u', 'word_a', 'words1', 'words']
+    list_display = ['root', 'link', 'binyan', 'word', 'word_u', 'word_a', 'words1', 'words2', 'words', 'words_clear']
+    search_fields = ['root', 'word', 'word_u', 'word_a', 'words1', 'words2', 'words', 'words_clear']
 
 
 @admin.register(Spisok6)

@@ -35,8 +35,11 @@ class Vocabulary(models.Model):
     word = models.CharField(max_length=255)
     word_u = models.CharField(max_length=255)
     word_a = models.CharField(max_length=255)
+    words2 = models.CharField(max_length=255, default='')
     words1 = models.CharField(max_length=255)
     words = models.CharField(max_length=255, null=True, blank=True)
+    words_clear = models.CharField(max_length=255, null=True, blank=True)
+    filter_for_app = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Vocabulary'
@@ -135,3 +138,15 @@ class RCategory(models.Model):
 
     def __str__(self):
         return self.r
+
+
+class Kluch(models.Model):
+    value = models.CharField('Ключ', max_length=255)
+
+    class Meta:
+        verbose_name = 'Ключ'
+        verbose_name_plural = 'Ключи'
+        ordering = ['value']
+
+    def __str__(self):
+        return self.value

@@ -1,7 +1,10 @@
+from django.conf import settings
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from ivrit.models import Vocabulary, Root, RCategory, Spisok1
+from ivrit.schemas import VocabularySchema
 
 
 def index(request):
@@ -192,3 +195,18 @@ def get_r_categories(r_filter):
     elif r_filter == '4':
         r_categories = [r_categories[0]] + r_categories[22:25]
     return r_categories
+
+
+def api_vocabulary(request):
+    token = request.GET.get('token')
+    if token != settings.API_TOKEN:
+        return redirect('index')
+
+    value = request.GET.get('value')
+    vocabulary = Vocabulary.objects.filter(filter_for_app=True)
+    if value:
+        check = vocabulary.filter(Q(words__icontains=value) | Q(words_clear__icontains=value)).first()
+        vocabulary = vocabulary.filter(root=check.root).order_by('link')
+
+    vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
+    return JsonResponse(vocabulary_list, safe=False)
