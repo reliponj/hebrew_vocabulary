@@ -205,8 +205,21 @@ def api_vocabulary(request):
     value = request.GET.get('value')
     vocabulary = Vocabulary.objects.filter(filter_for_app=True)
     if value:
-        check = vocabulary.filter(Q(words__icontains=value) | Q(words_clear__icontains=value)).first()
-        vocabulary = vocabulary.filter(root=check.root).order_by('link')
+        value = value.strip()
+        check = vocabulary.filter(Q(words=value) | 
+                                  Q(words_clear=value) | 
+                                  Q(words1=value) |
+                                  Q(words2=value) |
+                                  Q(word__icontains=value) | 
+                                  Q(word_u__icontains=value) |
+                                  Q(word_a__icontains=value)).first()
+        if check:
+            result = vocabulary.filter(root__icontains=check.words1).order_by('link')
+            if not result:
+                result = vocabulary.filter(root__icontains=check.root).order_by('link')
+            vocabulary = result
+        else:
+            vocabulary = []
 
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(vocabulary_list, safe=False)

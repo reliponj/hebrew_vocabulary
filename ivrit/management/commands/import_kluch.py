@@ -6,6 +6,36 @@ from django.core.management import BaseCommand
 from ivrit.models import Kluch, Vocabulary
 
 
+def import_vocabulary_by_kluch():
+    kluchs = Kluch.objects.filter()
+    i = 0
+
+    vocs = Vocabulary.objects.filter(filter_for_app=True)
+    for voc in vocs:
+        voc.filter_for_app = False
+        voc.save()
+
+    for kluch in kluchs:
+        i += 1
+        vocabulary = Vocabulary.objects.filter(words=kluch.value)
+        if not vocabulary:
+            print(i)
+            print(kluch.value)
+            print("בְּעֶטיוֹ")
+            continue
+
+        for voc in vocabulary:
+            voc.filter_for_app = True
+            voc.save()
+
+            vocabulary_2 = Vocabulary.objects.filter(root=voc.root)
+            for voc2 in vocabulary_2:
+                voc2.filter_for_app = True
+                voc2.save()
+
+    print(len(Vocabulary.objects.filter(filter_for_app=True)))
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         wb = openpyxl.load_workbook('kluch.xlsx')
@@ -25,30 +55,4 @@ class Command(BaseCommand):
             kluch = Kluch(value=value)
             kluch.save()
 
-        kluchs = Kluch.objects.filter()
-        i = 0
-
-        # vocs = Vocabulary.objects.filter(filter_for_app=True)
-        # for voc in vocs:
-        #     voc.filter_for_app = False
-        #     voc.save()
-
-        for kluch in kluchs:
-            i += 1
-            vocabulary = Vocabulary.objects.filter(words=kluch.value)
-            if not vocabulary:
-                print(i)
-                print(kluch.value)
-                print("בְּעֶטיוֹ")
-                continue
-
-            for voc in vocabulary:
-                voc.filter_for_app = True
-                voc.save()
-
-                vocabulary_2 = Vocabulary.objects.filter(root=voc.root)
-                for voc2 in vocabulary_2:
-                    voc2.filter_for_app = True
-                    voc2.save()
-
-        print(len(Vocabulary.objects.filter(filter_for_app=True)))
+        import_vocabulary_by_kluch()
