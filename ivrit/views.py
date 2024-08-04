@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db.models import Q
+from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -210,10 +211,10 @@ def api_vocabulary(request):
         if 'а' <= value <= 'я' or 'А' <= value <= 'Я':
             order_by = 'word'
             check = vocabulary.filter(Q(word__icontains=value) |
-                                      Q(word_u__icontains=value)).order_by(order_by).first()
+                                      Q(word_u__icontains=value)).order_by(Lower(order_by)).first()
         elif 'a' <= value <= 'z' or 'A' <= value <= 'Z':
             order_by = 'word_a'
-            check = vocabulary.filter(Q(word_a__icontains=value)).order_by(order_by).first()
+            check = vocabulary.filter(Q(word_a__icontains=value)).order_by(Lower(order_by)).first()
         else:
             order_by = 'words1'
             check = vocabulary.filter(Q(words=value) |
