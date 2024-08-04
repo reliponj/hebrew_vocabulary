@@ -204,31 +204,38 @@ def api_vocabulary(request):
         return redirect('index')
 
     value = request.GET.get('value')
+    is_all_results = request.GET.get('is_all_results')
     vocabulary = Vocabulary.objects.filter(filter_for_app=True).order_by('link')
     if value:
         value = value.strip()
 
         if 'а' <= value <= 'я' or 'А' <= value <= 'Я':
             order_by = 'word'
-            check = vocabulary.filter(Q(word__icontains=value) |
-                                      Q(word_u__icontains=value)).order_by(Lower(order_by)).first()
+            check = vocabulary.filter(Q(word__startswith=value) |
+                                      Q(word_u__startswith=value)).order_by(Lower(order_by)).first()
         elif 'a' <= value <= 'z' or 'A' <= value <= 'Z':
             order_by = 'word_a'
-            check = vocabulary.filter(Q(word_a__icontains=value)).order_by(Lower(order_by)).first()
+            check = vocabulary.filter(Q(word_a__startswith=value)).order_by(Lower(order_by))
+            for v in check:
+                print(v.word_a)
+            check = check.first()
         else:
             order_by = 'words1'
-            check = vocabulary.filter(Q(words=value) |
-                                      Q(words_clear=value) |
-                                      Q(words1=value) |
-                                      Q(words2=value)).order_by(order_by).first()
+            check = vocabulary.filter(Q(words__startswith=value) |
+                                      Q(words_clear__startswith=value) |
+                                      Q(words1__startswith=value) |
+                                      Q(words2__startswith=value)).order_by(order_by).first()
 
-        if check:
-            result = vocabulary.filter(root__icontains=check.words1)
-            if not result:
-                result = vocabulary.filter(root__icontains=check.root)
-            vocabulary = result
+        if is_all_results:
+            if check:
+                result = vocabulary.filter(root__icontains=check.words1)
+                if not result:
+                    result = vocabulary.filter(root__icontains=check.root)
+                vocabulary = result
+            else:
+                vocabulary = []
         else:
-            vocabulary = []
+            vocabulary = check
 
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(vocabulary_list, safe=False)
