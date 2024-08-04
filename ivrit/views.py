@@ -203,7 +203,7 @@ def api_vocabulary(request):
         return redirect('index')
 
     value = request.GET.get('value')
-    vocabulary = Vocabulary.objects.filter(filter_for_app=True)
+    vocabulary = Vocabulary.objects.filter(filter_for_app=True).order_by('link')
     if value:
         value = value.strip()
         check = vocabulary.filter(Q(words=value) | 
@@ -214,9 +214,9 @@ def api_vocabulary(request):
                                   Q(word_u__icontains=value) |
                                   Q(word_a__icontains=value)).first()
         if check:
-            result = vocabulary.filter(root__icontains=check.words1).order_by('link')
+            result = vocabulary.filter(root__icontains=check.words1)
             if not result:
-                result = vocabulary.filter(root__icontains=check.root).order_by('link')
+                result = vocabulary.filter(root__icontains=check.root)
             vocabulary = result
         else:
             vocabulary = []

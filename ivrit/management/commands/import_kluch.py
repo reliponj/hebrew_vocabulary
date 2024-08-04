@@ -30,8 +30,9 @@ def import_vocabulary_by_kluch():
 
             vocabulary_2 = Vocabulary.objects.filter(root=voc.root)
             for voc2 in vocabulary_2:
-                voc2.filter_for_app = True
-                voc2.save()
+                if '1.' not in voc2.words1:
+                    voc2.filter_for_app = True
+                    voc2.save()
 
     print(len(Vocabulary.objects.filter(filter_for_app=True)))
 
