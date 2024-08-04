@@ -206,13 +206,21 @@ def api_vocabulary(request):
     vocabulary = Vocabulary.objects.filter(filter_for_app=True).order_by('link')
     if value:
         value = value.strip()
-        check = vocabulary.filter(Q(words=value) | 
-                                  Q(words_clear=value) | 
-                                  Q(words1=value) |
-                                  Q(words2=value) |
-                                  Q(word__icontains=value) | 
-                                  Q(word_u__icontains=value) |
-                                  Q(word_a__icontains=value)).first()
+
+        if 'а' <= value <= 'я' or 'А' <= value <= 'Я':
+            order_by = 'word'
+            check = vocabulary.filter(Q(word__icontains=value) |
+                                      Q(word_u__icontains=value)).order_by(order_by).first()
+        elif 'a' <= value <= 'z' or 'A' <= value <= 'Z':
+            order_by = 'word_a'
+            check = vocabulary.filter(Q(word_a__icontains=value)).order_by(order_by).first()
+        else:
+            order_by = 'words1'
+            check = vocabulary.filter(Q(words=value) |
+                                      Q(words_clear=value) |
+                                      Q(words1=value) |
+                                      Q(words2=value)).order_by(order_by).first()
+
         if check:
             result = vocabulary.filter(root__icontains=check.words1)
             if not result:
