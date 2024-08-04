@@ -216,8 +216,8 @@ def api_vocabulary(request):
         elif 'a' <= value <= 'z' or 'A' <= value <= 'Z':
             order_by = 'word_a'
             check = vocabulary.filter(Q(word_a__startswith=value)).order_by(Lower(order_by))
-            for v in check:
-                print(v.word_a)
+            # for v in check:
+            #     print(v.word_a)
             check = check.first()
         else:
             order_by = 'words1'
@@ -235,7 +235,7 @@ def api_vocabulary(request):
             else:
                 vocabulary = []
         else:
-            vocabulary = check
+            vocabulary = [check]
 
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(vocabulary_list, safe=False)
