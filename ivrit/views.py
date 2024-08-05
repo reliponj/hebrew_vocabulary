@@ -4,8 +4,8 @@ from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
-from ivrit.models import Vocabulary, Root, RCategory, Spisok1
-from ivrit.schemas import VocabularySchema
+from ivrit.models import Vocabulary, Root, RCategory, Spisok1, Setting
+from ivrit.schemas import VocabularySchema, SettingsSchema
 
 
 def index(request):
@@ -198,6 +198,16 @@ def get_r_categories(r_filter):
     return r_categories
 
 
+def api_settings(request):
+    token = request.GET.get('token')
+    if token != settings.API_TOKEN:
+        return redirect('index')
+
+    setting = Setting.get_settings()
+    settings_data = SettingsSchema.from_orm(setting).dict()
+    return JsonResponse(settings_data, safe=False)
+
+
 def api_vocabulary(request):
     token = request.GET.get('token')
     if token != settings.API_TOKEN:
@@ -211,20 +221,20 @@ def api_vocabulary(request):
 
         if 'а' <= value <= 'я' or 'А' <= value <= 'Я':
             order_by = 'word'
-            check = vocabulary.filter(Q(word__startswith=value) |
-                                      Q(word_u__startswith=value)).order_by(Lower(order_by)).first()
+            check = vocabulary.filter(Q(word__istartswith=value) |
+                                      Q(word_u__istartswith=value)).order_by(Lower(order_by)).first()
         elif 'a' <= value <= 'z' or 'A' <= value <= 'Z':
             order_by = 'word_a'
-            check = vocabulary.filter(Q(word_a__startswith=value)).order_by(Lower(order_by))
+            check = vocabulary.filter(Q(word_a__istartswith=value)).order_by(Lower(order_by))
             # for v in check:
             #     print(v.word_a)
             check = check.first()
         else:
             order_by = 'words1'
-            check = vocabulary.filter(Q(words__startswith=value) |
-                                      Q(words_clear__startswith=value) |
-                                      Q(words1__startswith=value) |
-                                      Q(words2__startswith=value)).order_by(order_by).first()
+            check = vocabulary.filter(Q(words__istartswith=value) |
+                                      Q(words_clear__istartswith=value) |
+                                      Q(words1__istartswith=value) |
+                                      Q(words2__istartswith=value)).order_by(order_by).first()
 
         if is_all_results:
             if check:

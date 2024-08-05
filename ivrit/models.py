@@ -11,6 +11,11 @@ class Setting(models.Model):
     about_en = models.TextField('Справка (EN)', blank=True, default='')
     payment_sum = models.IntegerField('Сумма платежа', default=0)
 
+    app_about_ru = models.TextField('Справка App (RU)', blank=True, default='')
+    app_about_ua = models.TextField('Справка App (UA)', blank=True, default='')
+    app_about_en = models.TextField('Справка App (EN)', blank=True, default='')
+    app_about_il = models.TextField('Справка App (IL)', blank=True, default='')
+
     class Meta:
         verbose_name = 'Настройки'
         verbose_name_plural = 'Настройки'
