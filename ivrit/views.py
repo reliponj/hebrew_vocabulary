@@ -4,8 +4,8 @@ from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
-from ivrit.models import Vocabulary, Root, RCategory, Spisok1, Setting
-from ivrit.schemas import VocabularySchema, SettingsSchema
+from ivrit.models import Vocabulary, Root, RCategory, Spisok1, Setting, Kluch
+from ivrit.schemas import VocabularySchema, SettingsSchema, KluchSchema
 
 
 def index(request):
@@ -208,6 +208,16 @@ def api_settings(request):
     return JsonResponse(settings_data, safe=False)
 
 
+def api_kluch(request):
+    token = request.GET.get('token')
+    if token != settings.API_TOKEN:
+        return redirect('index')
+
+    kluch = Kluch.objects.filter()
+    kluch_list = [KluchSchema.from_orm(item).dict() for item in kluch]
+    return JsonResponse(kluch_list, safe=False)
+
+
 def api_vocabulary(request):
     token = request.GET.get('token')
     if token != settings.API_TOKEN:
@@ -215,14 +225,16 @@ def api_vocabulary(request):
 
     value = request.GET.get('value')
     is_all_results = request.GET.get('is_all_results')
-    vocabulary = Vocabulary.objects.filter(filter_for_app=True).order_by('link')
     if value:
         value = value.strip()
 
+        kluch = Kluch.objects.filter()
+        kluch_roots = [item.root for item in kluch]
+        vocabulary = Vocabulary.objects.filter(root__in=kluch_roots)
+
         if 'а' <= value <= 'я' or 'А' <= value <= 'Я':
             order_by = 'word'
-            check = vocabulary.filter(Q(word__istartswith=value) |
-                                      Q(word_u__istartswith=value)).order_by(Lower(order_by)).first()
+            check = vocabulary.filter(Q(word__istartswith=value)).order_by(Lower(order_by)).first()
         elif 'a' <= value <= 'z' or 'A' <= value <= 'Z':
             order_by = 'word_a'
             check = vocabulary.filter(Q(word_a__istartswith=value)).order_by(Lower(order_by))
@@ -238,14 +250,14 @@ def api_vocabulary(request):
 
         if is_all_results:
             if check:
-                result = vocabulary.filter(root__icontains=check.words1)
-                if not result:
-                    result = vocabulary.filter(root__icontains=check.root)
+                result = vocabulary.filter(root__icontains=check.root).order_by('link')
                 vocabulary = result
             else:
                 vocabulary = []
         else:
             vocabulary = [check]
 
-    vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
+        vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
+    else:
+        vocabulary_list = []
     return JsonResponse(vocabulary_list, safe=False)

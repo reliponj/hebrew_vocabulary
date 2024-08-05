@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.shortcuts import redirect
 
-from ivrit.management.commands.import_kluch import import_vocabulary_by_kluch
-from ivrit.models import Root, Vocabulary, Spisok6, RCategory, Spisok1, Binyan, Group, Setting, Kluch
+from ivrit.management.commands.import_kluch_v2 import save_all_kluch
+from ivrit.models import Root, Vocabulary, Spisok6, RCategory, Spisok1, Setting, Kluch
 
 
 @admin.register(Setting)
@@ -14,9 +14,11 @@ class SettingAdmin(admin.ModelAdmin):
 
 @admin.register(Kluch)
 class KluchAdmin(admin.ModelAdmin):
+    list_display = ['value', 'value_ru', 'value_ua', 'value_en']
+
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        import_vocabulary_by_kluch()
+        save_all_kluch()
 
 
 @admin.register(Vocabulary)

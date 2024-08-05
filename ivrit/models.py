@@ -44,7 +44,6 @@ class Vocabulary(models.Model):
     words1 = models.CharField(max_length=255)
     words = models.CharField(max_length=255, null=True, blank=True)
     words_clear = models.CharField(max_length=255, null=True, blank=True)
-    filter_for_app = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Vocabulary'
@@ -147,6 +146,10 @@ class RCategory(models.Model):
 
 class Kluch(models.Model):
     value = models.CharField('Ключ', max_length=255)
+    value_ru = models.CharField('Ключ (RU)', max_length=255, default='')
+    value_ua = models.CharField('Ключ (UA)', max_length=255, default='')
+    value_en = models.CharField('Ключ (EN)', max_length=255, default='')
+    root = models.CharField('Корень', max_length=255, default='')
 
     class Meta:
         verbose_name = 'Ключ'

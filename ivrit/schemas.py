@@ -1,6 +1,17 @@
 from pydantic import BaseModel
 
 
+class KluchSchema(BaseModel):
+    value: str
+    value_ru: str
+    value_ua: str
+    value_en: str
+
+    class Config:
+        orm_mode = True
+        from_attributes = True
+
+
 class VocabularySchema(BaseModel):
     word: str
     word_u: str
