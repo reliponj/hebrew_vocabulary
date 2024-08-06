@@ -233,11 +233,12 @@ def api_vocabulary(request):
         kluch_roots = [item.root for item in kluch]
         vocabulary = Vocabulary.objects.filter(root__in=kluch_roots)
 
+        check = None
         if language == 'ru':
             order_by = 'word'
             check = vocabulary.filter(Q(word__istartswith=value)).order_by(Lower(order_by)).first()
         elif language == 'ua':
-            order_by = 'word_ua'
+            order_by = 'word_u'
             check = vocabulary.filter(Q(word_u__istartswith=value)).order_by(Lower(order_by)).first()
         elif language == 'en':
             order_by = 'word_a'
@@ -245,7 +246,8 @@ def api_vocabulary(request):
             # for v in check:
             #     print(v.word_a)
             check = check.first()
-        else:
+
+        if not check:
             order_by = 'words1'
             check = vocabulary.filter(Q(words__istartswith=value) |
                                       Q(words_clear__istartswith=value) |
