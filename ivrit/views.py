@@ -225,6 +225,7 @@ def api_vocabulary(request):
 
     value = request.GET.get('value')
     is_all_results = request.GET.get('is_all_results')
+    language = request.GET.get('language')
     if value:
         value = value.strip()
 
@@ -232,10 +233,13 @@ def api_vocabulary(request):
         kluch_roots = [item.root for item in kluch]
         vocabulary = Vocabulary.objects.filter(root__in=kluch_roots)
 
-        if 'а' <= value <= 'я' or 'А' <= value <= 'Я':
+        if language == 'ru':
             order_by = 'word'
             check = vocabulary.filter(Q(word__istartswith=value)).order_by(Lower(order_by)).first()
-        elif 'a' <= value <= 'z' or 'A' <= value <= 'Z':
+        elif language == 'ua':
+            order_by = 'word_ua'
+            check = vocabulary.filter(Q(word_u__istartswith=value)).order_by(Lower(order_by)).first()
+        elif language == 'en':
             order_by = 'word_a'
             check = vocabulary.filter(Q(word_a__istartswith=value)).order_by(Lower(order_by))
             # for v in check:
@@ -255,7 +259,10 @@ def api_vocabulary(request):
             else:
                 vocabulary = []
         else:
-            vocabulary = [check]
+            if check:
+                vocabulary = [check]
+            else:
+                vocabulary = []
 
         vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     else:
