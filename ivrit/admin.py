@@ -15,6 +15,7 @@ class SettingAdmin(admin.ModelAdmin):
 @admin.register(Kluch)
 class KluchAdmin(admin.ModelAdmin):
     list_display = ['value', 'value_ru', 'value_ua', 'value_en']
+    search_fields = ['value', 'value_ru', 'value_ua', 'value_en']
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)

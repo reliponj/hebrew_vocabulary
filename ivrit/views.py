@@ -95,6 +95,10 @@ def index(request):
     return render(request, 'korny.html', context=context)
 
 
+def privacy(request):
+    return render(request, 'privacy.html')
+
+
 def get_root(root, group_filter):
     spisok = Spisok1.objects.filter(word=root)
     if not spisok:
