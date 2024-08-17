@@ -51,6 +51,8 @@ def context_controller(request):
             "free_until": "Бесплатно до",
             "welcome": "Корни иврита",
             "sub_expired": "Ваш пробный период истек!",
+
+            "privacy_policy": "Политика конфиденциальности",
         },
         "ua": {
             "site_name": "Корені дієслів",
@@ -96,6 +98,7 @@ def context_controller(request):
             "free_until": "Безкоштовно до",
             "welcome": "Коріння івриту",
             "sub_expired": "Ваш пробний період минув!",
+            "privacy_policy": "Політика конфіденціальності",
         },
         "en": {
             "site_name": "Verb Roots",
@@ -141,6 +144,8 @@ def context_controller(request):
             "free_until": "Free until",
             "welcome": "Hebrew roots",
             "sub_expired": "Your trial period has expired!",
+
+            "privacy_policy": "Privacy Policy",
         }
     }
 

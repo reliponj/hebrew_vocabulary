@@ -42,6 +42,15 @@
       <meta name="keywords" content="{{settings.key_words}}">
    </head>
    {% block 'content' %}{% endblock%}
+   <footer style="display: flex; justify-content: center;">
+       <p style="font-size: 16px;">
+            © Vladimir Musin ולדימיר מוסין
+       </p>
+       <div style="width: 50px;"></div>
+       <a href="{% url 'privacy' %}">
+           {{locale.privacy_policy}}
+       </a>
+   </footer>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
        const inputField = document.getElementById('rootInput');
