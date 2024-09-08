@@ -15,6 +15,10 @@ class KluchSchema(BaseModel):
 class RootSchema(BaseModel):
     root: str
 
+    class Config:
+        orm_mode = True
+        from_attributes = True
+
 
 class VocabularySchema(BaseModel):
     word: str
