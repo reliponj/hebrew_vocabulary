@@ -12,6 +12,10 @@ class KluchSchema(BaseModel):
         from_attributes = True
 
 
+class RootSchema(BaseModel):
+    root: str
+
+
 class VocabularySchema(BaseModel):
     word: str
     word_u: str

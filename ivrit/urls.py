@@ -10,4 +10,7 @@ urlpatterns = [
     path('api/vocabulary/', views.api_vocabulary),
     path('api/kluch/', views.api_kluch),
     path('api/settings/', views.api_settings),
+
+    path('api/roots/', views.api_root),
+    path('api/roots/vocabulary/', views.api_root_vocabulary),
 ]

@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from ivrit.models import Vocabulary, Root, RCategory, Spisok1, Setting, Kluch
-from ivrit.schemas import VocabularySchema, SettingsSchema, KluchSchema
+from ivrit.schemas import VocabularySchema, SettingsSchema, KluchSchema, RootSchema
 
 
 def index(request):
@@ -210,6 +210,29 @@ def api_settings(request):
     setting = Setting.get_settings()
     settings_data = SettingsSchema.from_orm(setting).dict()
     return JsonResponse(settings_data, safe=False)
+
+
+def api_root(request):
+    token = request.GET.get('token')
+    if token != settings.API_TOKEN:
+        return redirect('index')
+
+    roots = Root.objects.filter(root__icontains='.').order_by('root')
+    roots = roots.filter(~Q(groups=None))
+    roots_list = [RootSchema.from_orm(item).dict() for item in roots]
+    return JsonResponse(roots_list, safe=False)
+
+
+def api_root_vocabulary(request):
+    token = request.GET.get('token')
+    if token != settings.API_TOKEN:
+        return redirect('index')
+
+    root = request.GET.get('root')
+    root = Root.objects.filter(root=root).first()
+    vocabulary = Vocabulary.objects.filter(root__in=root)
+    result = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
+    return JsonResponse(result, safe=False)
 
 
 def api_kluch(request):
