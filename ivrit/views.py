@@ -212,14 +212,23 @@ def api_settings(request):
     return JsonResponse(settings_data, safe=False)
 
 
+def get_roots():
+    roots = Root.objects.filter(root__icontains='.').order_by('root')
+    roots = roots.filter(~Q(groups=None))
+    return roots
+
+
 def api_root(request):
     token = request.GET.get('token')
     if token != settings.API_TOKEN:
         return redirect('index')
 
-    roots = Root.objects.filter(root__icontains='.').order_by('root')
-    roots = roots.filter(~Q(groups=None))
-    roots_list = [RootSchema.from_orm(item).dict() for item in roots]
+    roots = get_roots()
+    roots_list = []
+    for item in roots:
+        schema = RootSchema.from_orm(item).dict()
+        if schema not in roots_list:
+            roots_list.append(schema)
     return JsonResponse(roots_list, safe=False)
 
 
@@ -228,11 +237,48 @@ def api_root_vocabulary(request):
     if token != settings.API_TOKEN:
         return redirect('index')
 
+    value = request.GET.get('value')
     root = request.GET.get('root')
-    root = Root.objects.filter(root=root).first()
-    vocabulary = Vocabulary.objects.filter(root__in=root)
-    result = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
-    return JsonResponse(result, safe=False)
+    language = request.GET.get('language')
+    if value:
+        value = value.strip()
+
+        roots = get_roots()
+        filter_roots = [item.root for item in roots]
+        vocabulary = Vocabulary.objects.filter(root__in=filter_roots)
+
+        check = None
+        if language == 'ru':
+            order_by = 'word'
+            check = vocabulary.filter(Q(word__istartswith=value)).order_by(Lower(order_by)).first()
+        elif language == 'ua':
+            order_by = 'word_u'
+            check = vocabulary.filter(Q(word_u__istartswith=value)).order_by(Lower(order_by)).first()
+        elif language == 'en':
+            order_by = 'word_a'
+            check = vocabulary.filter(Q(word_a__istartswith=value)).order_by(Lower(order_by))
+            # for v in check:
+            #     print(v.word_a)
+            check = check.first()
+
+        if not check:
+            order_by = 'words1'
+            check = vocabulary.filter(Q(words__istartswith=value) |
+                                      Q(words_clear__istartswith=value) |
+                                      Q(words1__istartswith=value) |
+                                      Q(words2__istartswith=value)).order_by(order_by).first()
+
+        if check:
+            result = vocabulary.filter(root__icontains=check.root).order_by('link')
+            vocabulary = result
+        else:
+            vocabulary = []
+    elif root:
+        vocabulary = Vocabulary.objects.filter(root__in=[root]).order_by('link')
+    else:
+        vocabulary = []
+    vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
+    return JsonResponse(vocabulary_list, safe=False)
 
 
 def api_kluch(request):
