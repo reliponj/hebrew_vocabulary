@@ -14,6 +14,13 @@ def get_roots():
     return roots
 
 
+def get_vocabulary():
+    roots = get_roots()
+    filter_roots = [item.root for item in roots]
+    vocabulary = Vocabulary.objects.filter(root__in=filter_roots)
+    return vocabulary
+
+
 def api_root(request):
     token = request.GET.get('token')
     if token != settings.API_TOKEN:
@@ -39,9 +46,7 @@ def api_root_vocabulary_by_search(request):
     if value:
         value = value.strip()
 
-        roots = get_roots()
-        filter_roots = [item.root for item in roots]
-        vocabulary = Vocabulary.objects.filter(root__in=filter_roots)
+        vocabulary = get_vocabulary()
 
         check = None
         if language == 'ru':
@@ -75,6 +80,7 @@ def api_root_vocabulary_by_root(request):
     if root:
         root = Root.objects.filter(root=root).first()
         if root:
+            vocabulary = get_vocabulary()
             result = vocabulary.filter(root__icontains=root).order_by('link')
             vocabulary = result
 
