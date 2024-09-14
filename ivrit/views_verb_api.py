@@ -107,7 +107,7 @@ def api_verb(request):
     if not chosen_binyan:
         chosen_binyan = binyans[0]
     else:
-        chosen_binyan = Binyan.objects.get(binyan=chosen_binyan)
+        chosen_binyan = binyans.filter(binyan=chosen_binyan).first()
 
     # R-CATEGORY
     r_categories, infinitives = get_sub_data(root, chosen_binyan, "all")
