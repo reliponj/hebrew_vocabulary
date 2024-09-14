@@ -4,7 +4,7 @@ from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.shortcuts import redirect
 
-from ivrit.models import Root, Vocabulary, RCategory
+from ivrit.models import Root, Vocabulary, RCategory, Binyan
 from ivrit.schemas import RootSchema, VocabularySchema, BinyanSchema, VerbSchema, RCategorySchema
 from ivrit.views import get_sub_data
 
@@ -106,6 +106,8 @@ def api_verb(request):
     binyans = root.binyans.all()
     if not chosen_binyan:
         chosen_binyan = binyans[0]
+    else:
+        chosen_binyan = Binyan.objects.get(binyan=chosen_binyan)
 
     # R-CATEGORY
     r_categories, infinitives = get_sub_data(root, chosen_binyan, "all")
