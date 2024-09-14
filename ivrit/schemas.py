@@ -62,6 +62,7 @@ class RCategorySchema(BaseModel):
 class VerbSchema(BaseModel):
     binyans: list[BinyanSchema]
     chosen_binyan: BinyanSchema
+    infinitives: list[str]
 
     main_form: RCategorySchema
     present: list[RCategorySchema]

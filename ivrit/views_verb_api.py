@@ -115,6 +115,7 @@ def api_verb(request):
     verb_schema = VerbSchema(
         binyans=binyans_list,
         chosen_binyan=BinyanSchema.from_orm(chosen_binyan).dict(),
+        infinitives=infinitives,
         main_form=r_categories_list[0],
         present=r_categories_list[1:5],
         past=r_categories_list[5:14],
