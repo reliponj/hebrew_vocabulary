@@ -4,8 +4,9 @@ from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.shortcuts import redirect
 
-from ivrit.models import Root, Vocabulary
-from ivrit.schemas import RootSchema, VocabularySchema
+from ivrit.models import Root, Vocabulary, RCategory
+from ivrit.schemas import RootSchema, VocabularySchema, BinyanSchema, VerbSchema, RCategorySchema
+from ivrit.views import get_sub_data
 
 
 def get_roots():
@@ -58,14 +59,15 @@ def api_root_vocabulary_by_search(request):
         elif language == 'en':
             order_by = 'word_a'
             check = vocabulary.filter(Q(word_a__istartswith=value)).order_by(Lower(order_by))
+
         if not check:
             order_by = 'words1'
             check = vocabulary.filter(Q(words__istartswith=value) |
                                       Q(words_clear__istartswith=value) |
                                       Q(words1__istartswith=value) |
-                                      Q(words2__istartswith=value)).order_by(order_by).first()
+                                      Q(words2__istartswith=value)).order_by(order_by)
 
-        vocabulary = check
+        vocabulary = check[:5]
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(vocabulary_list, safe=False)
 
@@ -86,3 +88,37 @@ def api_root_vocabulary_by_root(request):
 
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(vocabulary_list, safe=False)
+
+
+def api_verb(request):
+    token = request.GET.get('token')
+    if token != settings.API_TOKEN:
+        return redirect('index')
+
+    word = request.GET.get('word')
+    chosen_binyan = request.GET.get('binyan')
+
+    vocabulary = get_vocabulary()
+    word = vocabulary.filter(words1=word).first()
+    root = Root.objects.filter(root=word.root).first()
+
+    # BINYANS
+    binyans = root.binyans.all()
+    if not chosen_binyan:
+        chosen_binyan = binyans[0]
+
+    # R-CATEGORY
+    r_categories, infinitives = get_sub_data(root, chosen_binyan, "all")
+
+    binyans_list = [BinyanSchema.from_orm(item).dict() for item in binyans]
+    r_categories_list = [RCategorySchema.from_orm(item).dict() for item in r_categories]
+    verb_schema = VerbSchema(
+        binyans=binyans_list,
+        chosen_binyan=BinyanSchema.from_orm(chosen_binyan).dict(),
+        main_form=r_categories_list[0],
+        present=r_categories_list[1:5],
+        past=r_categories_list[5:14],
+        future=r_categories_list[14:22],
+        naklon=r_categories_list[22:25],
+    )
+    return JsonResponse(verb_schema.dict(), safe=False)

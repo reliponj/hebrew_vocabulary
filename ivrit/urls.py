@@ -14,4 +14,5 @@ urlpatterns = [
     path('api/roots/', views_verb_api.api_root),
     path('api/roots/vocabulary/by_search/', views_verb_api.api_root_vocabulary_by_search),
     path('api/roots/vocabulary/by_root/', views_verb_api.api_root_vocabulary_by_root),
+    path('api/roots/verb/', views_verb_api.api_verb),
 ]

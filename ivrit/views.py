@@ -60,7 +60,14 @@ def index(request):
         r_categories, infinitive = None, None
         modal = 'no_verb'
     else:
-        r_categories, infinitive = get_sub_data(chosen_root, chosen_binyan, r_filter, language)
+        r_categories, infinitives = get_sub_data(chosen_root, chosen_binyan, r_filter)
+        infinitive = infinitives[0]
+        if language == 'ru':
+            infinitive = infinitives[1]
+        elif language == 'ua':
+            infinitive = infinitives[2]
+        elif language == 'en':
+            infinitive = infinitives[3]
 
     infinitive_size = 16
     if infinitive and len(infinitive) > 10:
@@ -151,7 +158,7 @@ def change_filter(request, param, value):
     return redirect(link + '?' + new_params)
 
 
-def get_sub_data(chosen_root, chosen_binyan, r_filter, language):
+def get_sub_data(chosen_root, chosen_binyan, r_filter):
     spisok = Spisok1.objects.filter(links=chosen_binyan.link).first()
     same_links = Spisok1.objects.filter(links=spisok.links)
 
@@ -173,16 +180,7 @@ def get_sub_data(chosen_root, chosen_binyan, r_filter, language):
     if not slovar:
         return
     slovar = slovar.first()
-
-    infinitive = ''
-    if language == 'ru':
-        infinitive = slovar.word
-    if language == 'ua':
-        infinitive = slovar.word_u
-    if language == 'en':
-        infinitive = slovar.word_a
-
-    return r_categories, infinitive
+    return r_categories, [slovar.words1, slovar.word, slovar.word_u, slovar.word_a]
 
 
 def get_r_categories(r_filter):

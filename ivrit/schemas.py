@@ -40,3 +40,35 @@ class SettingsSchema(BaseModel):
     class Config:
         orm_mode = True
         from_attributes = True
+
+
+class BinyanSchema(BaseModel):
+    binyan: str
+
+    class Config:
+        orm_mode = True
+        from_attributes = True
+
+
+class RCategorySchema(BaseModel):
+    word: str
+    description: str
+
+    class Config:
+        orm_mode = True
+        from_attributes = True
+
+
+class VerbSchema(BaseModel):
+    binyans: list[BinyanSchema]
+    chosen_binyan: BinyanSchema
+
+    main_form: RCategorySchema
+    present: list[RCategorySchema]
+    past: list[RCategorySchema]
+    future: list[RCategorySchema]
+    naklon: list[RCategorySchema]
+
+    class Config:
+        orm_mode = True
+        from_attributes = True
