@@ -1,6 +1,6 @@
 from django.urls import path
 
-from ivrit import views
+from ivrit import views, views_verb_api
 
 urlpatterns = [
     path('', views.index, name="index"),
@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/kluch/', views.api_kluch),
     path('api/settings/', views.api_settings),
 
-    path('api/roots/', views.api_root),
-    path('api/roots/vocabulary/', views.api_root_vocabulary),
+    path('api/roots/', views_verb_api.api_root),
+    path('api/roots/vocabulary/by_search/', views_verb_api.api_root_vocabulary_by_search),
+    path('api/roots/vocabulary/by_root/', views_verb_api.api_root_vocabulary_by_root),
 ]
