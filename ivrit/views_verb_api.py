@@ -4,7 +4,7 @@ from django.db.models.functions import Lower
 from django.http import JsonResponse
 from django.shortcuts import redirect
 
-from ivrit.models import Root, Vocabulary, RCategory, Binyan
+from ivrit.models import Root, Spisok1, Vocabulary, RCategory, Binyan
 from ivrit.schemas import RootSchema, VocabularySchema, BinyanSchema, VerbSchema, RCategorySchema
 from ivrit.views import get_sub_data
 
@@ -49,23 +49,28 @@ def api_root_vocabulary_by_search(request):
 
         vocabulary = get_vocabulary()
 
-        check = None
+        check = []
+        order_by = "words"
         if language == 'ru':
             order_by = 'word'
-            check = vocabulary.filter(Q(word__istartswith=value)).order_by(Lower(order_by))
+            check = vocabulary.filter(Q(word__icontains=value)).order_by(Lower(order_by))
         elif language == 'ua':
             order_by = 'word_u'
-            check = vocabulary.filter(Q(word_u__istartswith=value)).order_by(Lower(order_by))
+            check = vocabulary.filter(Q(word_u__icontains=value)).order_by(Lower(order_by))
         elif language == 'en':
             order_by = 'word_a'
-            check = vocabulary.filter(Q(word_a__istartswith=value)).order_by(Lower(order_by))
-
+            check = vocabulary.filter(Q(word_a__icontains=value)).order_by(Lower(order_by))
+        
         if not check:
-            order_by = 'words1'
-            check = vocabulary.filter(Q(words__istartswith=value) |
-                                      Q(words_clear__istartswith=value) |
-                                      Q(words1__istartswith=value) |
-                                      Q(words2__istartswith=value)).order_by(order_by)
+            if '.' in value:
+                check = vocabulary.filter(root__icontains=value).order_by(Lower(order_by))
+            else:
+                spisok1 = Spisok1.objects.filter(words__icontains=value,
+                                                word__icontains=value).order_by('words')
+                for spisok in spisok1:
+                    voc = vocabulary.filter(link=spisok.links)
+                    for v in voc:
+                        check.append(v)
 
         vocabulary = check[:5]
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
