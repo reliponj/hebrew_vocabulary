@@ -2,3 +2,5 @@
 /.env
 /.idea/
 /static/admin/
+/static/jazzmin/
+/static/vendor/
