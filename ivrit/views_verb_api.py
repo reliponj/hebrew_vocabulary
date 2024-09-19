@@ -65,8 +65,9 @@ def api_root_vocabulary_by_search(request):
             if '.' in value:
                 check = vocabulary.filter(root__icontains=value).order_by(Lower(order_by))
             else:
-                spisok1 = Spisok1.objects.filter(words__icontains=value,
-                                                word__icontains=value).order_by('words')
+                spisok1 = Spisok1.objects.filter(Q(words__icontains=value) |
+                                                 Q(word__icontains=value)).order_by('words')
+
                 for spisok in spisok1:
                     voc = vocabulary.filter(link=spisok.links)
                     for v in voc:
