@@ -50,11 +50,11 @@ class Spisok1Admin(admin.ModelAdmin):
 #     list_display = ['group']
 #
 #
-# @admin.register(Root)
-# class RootAdmin(admin.ModelAdmin):
-#     search_fields = ['root']
-#     list_display = ['root', 'get_binyans', 'get_groups', 'number']
-#     inlines = [BinyanAdmin]
+@admin.register(Root)
+class RootAdmin(admin.ModelAdmin):
+    search_fields = ['root']
+    list_display = ['root', 'get_binyans', 'get_groups', 'number']
+    # inlines = [BinyanAdmin]
 
 
 @admin.register(RCategory)

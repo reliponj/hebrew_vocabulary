@@ -51,15 +51,29 @@ def api_root_vocabulary_by_search(request):
 
         check = []
         order_by = "words"
+        filter_by_start = Q(word__istartswith=value)
+        filter_by_contains = Q(word__icontains=value)
         if language == 'ru':
             order_by = 'word'
-            check = vocabulary.filter(Q(word__icontains=value)).order_by(Lower(order_by))
+            filter_by_start = Q(word__istartswith=value)
+            filter_by_contains = Q(word__icontains=value)
         elif language == 'ua':
             order_by = 'word_u'
-            check = vocabulary.filter(Q(word_u__icontains=value)).order_by(Lower(order_by))
+            filter_by_start = Q(word_u__istartswith=value)
+            filter_by_contains = Q(word_u__icontains=value)
         elif language == 'en':
             order_by = 'word_a'
-            check = vocabulary.filter(Q(word_a__icontains=value)).order_by(Lower(order_by))
+            filter_by_start = Q(word_a__istartswith=value)
+            filter_by_contains = Q(word_a__icontains=value)
+        
+        check_vocabulary = vocabulary.filter(filter_by_start).order_by(Lower(order_by))
+        for v in check_vocabulary:
+            check.append(v)
+
+        check_vocabulary = vocabulary.filter(filter_by_contains).order_by(Lower(order_by))
+        for v in check_vocabulary:
+            if v not in check:
+                check.append(v)
         
         if not check:
             if '.' in value:
