@@ -59,12 +59,12 @@ def api_root_vocabulary_by_search(request):
             third_filter = Q(word__icontains=value)
         elif language == 'ua':
             order_by = 'word_u'
-            first_filter = Q(word_u__istartswith=value[0], word_u_icontains=value)
+            first_filter = Q(word_u__istartswith=value[0], word_u__icontains=value)
             second_filter = Q(word_u__regex=r'\b{}\b'.format(value))
             third_filter = Q(word__icontains=value)
         elif language == 'en':
             order_by = 'word_a'
-            first_filter = Q(word_a__istartswith=value[0], word_a_icontains=value)
+            first_filter = Q(word_a__istartswith=value[0], word_a__icontains=value)
             second_filter = Q(word_a__regex=r'\b{}\b'.format(value))
             third_filter = Q(word__icontains=value)
 
@@ -93,7 +93,7 @@ def api_root_vocabulary_by_search(request):
             else:
                 check = vocabulary.filter(root__icontains=value).order_by(Lower(order_by))
 
-        vocabulary = check
+        vocabulary = check[:10]
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(vocabulary_list, safe=False)
 
