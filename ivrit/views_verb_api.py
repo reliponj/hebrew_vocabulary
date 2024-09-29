@@ -16,7 +16,7 @@ def get_roots():
 
 
 def get_vocabulary():
-    roots = get_roots()
+    roots = roots = Root.objects.filter(root__icontains='.').order_by('root')
     filter_roots = [item.root for item in roots]
     vocabulary = Vocabulary.objects.filter(root__in=filter_roots)
     return vocabulary
@@ -46,48 +46,54 @@ def api_root_vocabulary_by_search(request):
     vocabulary = []
     if value:
         value = value.strip()
-
         vocabulary = get_vocabulary()
 
-        check = []
         order_by = "words"
-        filter_by_start = Q(word__istartswith=value)
-        filter_by_contains = Q(word__icontains=value)
+        first_filter = None
+        second_filter = None
+        third_filter = None
         if language == 'ru':
             order_by = 'word'
-            filter_by_start = Q(word__istartswith=value)
-            filter_by_contains = Q(word__icontains=value)
+            first_filter = Q(word__istartswith=value[0], word__icontains=value)
+            second_filter = Q(word__regex=r'\b{}\b'.format(value))
+            third_filter = Q(word__icontains=value)
         elif language == 'ua':
             order_by = 'word_u'
-            filter_by_start = Q(word_u__istartswith=value)
-            filter_by_contains = Q(word_u__icontains=value)
+            first_filter = Q(word_u__istartswith=value[0], word_u_icontains=value)
+            second_filter = Q(word_u__regex=r'\b{}\b'.format(value))
+            third_filter = Q(word__icontains=value)
         elif language == 'en':
             order_by = 'word_a'
-            filter_by_start = Q(word_a__istartswith=value)
-            filter_by_contains = Q(word_a__icontains=value)
-        
-        check_vocabulary = vocabulary.filter(filter_by_start).order_by(Lower(order_by))
-        for v in check_vocabulary:
-            check.append(v)
+            first_filter = Q(word_a__istartswith=value[0], word_a_icontains=value)
+            second_filter = Q(word_a__regex=r'\b{}\b'.format(value))
+            third_filter = Q(word__icontains=value)
 
-        check_vocabulary = vocabulary.filter(filter_by_contains).order_by(Lower(order_by))
-        for v in check_vocabulary:
-            if v not in check:
-                check.append(v)
-        
+        check = []
+        if first_filter:
+            check = list(vocabulary.filter(first_filter).order_by(Lower(order_by)))
+            second_filtered = vocabulary.filter(second_filter).order_by(Lower(order_by))
+            for filtered in second_filtered:
+                if filtered not in check:
+                    check.append(filtered)
+            third_filtered = vocabulary.filter(third_filter).order_by(Lower(order_by))
+            for filtered in third_filtered:
+                if filtered not in check:
+                    check.append(filtered)
+
         if not check:
-            if '.' in value:
-                check = vocabulary.filter(root__icontains=value).order_by(Lower(order_by))
-            else:
+            if '.' not in value:
                 spisok1 = Spisok1.objects.filter(Q(words__icontains=value) |
-                                                 Q(word__icontains=value)).order_by('words')
+                                                 Q(word__icontains=value)).order_by('word')
 
                 for spisok in spisok1:
-                    voc = vocabulary.filter(link=spisok.links)
+                    voc = vocabulary.filter(link=spisok.links)[:1]
                     for v in voc:
-                        check.append(v)
+                        if v not in check:
+                            check.append(v)
+            else:
+                check = vocabulary.filter(root__icontains=value).order_by(Lower(order_by))
 
-        vocabulary = check[:5]
+        vocabulary = check
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(vocabulary_list, safe=False)
 
