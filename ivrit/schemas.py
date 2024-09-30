@@ -26,6 +26,7 @@ class VocabularySchema(BaseModel):
     word_a: str
     words1: str
     link: str
+    root: str
 
     class Config:
         orm_mode = True
