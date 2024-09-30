@@ -93,7 +93,7 @@ def api_root_vocabulary_by_search(request):
             else:
                 check = vocabulary.filter(root__icontains=value).order_by(Lower(order_by))
 
-        vocabulary = check[:10]
+        vocabulary = check[:20]
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(vocabulary_list, safe=False)
 
