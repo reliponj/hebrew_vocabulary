@@ -54,18 +54,20 @@ def api_root_vocabulary_by_search(request):
         third_filter = None
         if language == 'ru':
             order_by = 'word'
-            first_filter = Q(word__istartswith=value[0], word__icontains=value)
-            second_filter = Q(word__regex=r'\b{}\b'.format(value))
+            first_filter = Q(word=value)
+            second_filter = Q(word__icontains=value) & Q(word__icontains=',')
             third_filter = Q(word__icontains=value)
         elif language == 'ua':
             order_by = 'word_u'
             first_filter = Q(word_u__istartswith=value[0], word_u__icontains=value)
-            second_filter = Q(word_u__regex=r'\b{}\b'.format(value))
+            second_filter = Q(word_u__icontains=value) & Q(word_u__icontains=',')
+            # second_filter = Q(word_u__regex=r'\b{}\b'.format(value))
             third_filter = Q(word__icontains=value)
         elif language == 'en':
             order_by = 'word_a'
             first_filter = Q(word_a__istartswith=value[0], word_a__icontains=value)
-            second_filter = Q(word_a__regex=r'\b{}\b'.format(value))
+            second_filter = Q(word_a__icontains=value) & Q(word_a__icontains=',')
+            # second_filter = Q(word_a__regex=r'\b{}\b'.format(value))
             third_filter = Q(word__icontains=value)
 
         check = []
