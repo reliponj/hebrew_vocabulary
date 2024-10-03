@@ -16,7 +16,8 @@ def get_roots():
 
 
 def get_vocabulary():
-    roots = roots = Root.objects.filter(root__icontains='.').order_by('root')
+    # roots = Root.objects.filter(root__icontains='.').order_by('root')
+    roots = get_roots()
     filter_roots = [item.root for item in roots]
     vocabulary = Vocabulary.objects.filter(root__in=filter_roots)
     return vocabulary
