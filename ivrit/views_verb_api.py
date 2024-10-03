@@ -85,12 +85,13 @@ def api_root_vocabulary_by_search(request):
         if not check:
             if '.' not in value:
                 spisok1 = Spisok1.objects.filter(Q(words=value) |
-                                                 Q(word=value)).order_by('link')
+                                                 Q(word=value)).order_by('links')
 
                 for spisok in spisok1:
                     voc = vocabulary.filter(root=spisok.roots, link=spisok.links)[:1]
                     for v in voc:
                         if v not in check:
+                            v.infinitive = spisok.words
                             check.append(v)
             else:
                 check = vocabulary.filter(root__icontains=value).order_by(Lower(order_by))

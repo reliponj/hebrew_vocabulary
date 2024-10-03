@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -27,6 +29,7 @@ class VocabularySchema(BaseModel):
     words1: str
     link: str
     root: str
+    infinitive: Optional[str] = None
 
     class Config:
         orm_mode = True
