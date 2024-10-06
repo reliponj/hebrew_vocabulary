@@ -136,6 +136,8 @@ def api_verb(request):
     binyans = root.binyans.all()
     if not chosen_binyan:
         chosen_binyan = binyans.filter(binyan=word.binyan).first()
+        if not chosen_binyan:
+            chosen_binyan = binyans[0]
     else:
         chosen_binyan = binyans.filter(binyan=chosen_binyan).first()
 
