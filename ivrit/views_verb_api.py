@@ -16,8 +16,8 @@ def get_roots():
 
 
 def get_vocabulary():
-    # roots = Root.objects.filter(root__icontains='.').order_by('root')
-    roots = get_roots()
+    roots = Root.objects.filter(root__icontains='.').order_by('root')
+    # roots = get_roots()
     filter_roots = [item.root for item in roots]
     vocabulary = Vocabulary.objects.filter(root__in=filter_roots)
     return vocabulary
@@ -135,7 +135,7 @@ def api_verb(request):
     # BINYANS
     binyans = root.binyans.all()
     if not chosen_binyan:
-        chosen_binyan = binyans[0]
+        chosen_binyan = binyans.filter(binyan=word.binyan)
     else:
         chosen_binyan = binyans.filter(binyan=chosen_binyan).first()
 
