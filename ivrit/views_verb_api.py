@@ -76,8 +76,24 @@ def api_root_vocabulary_by_search(request):
             check = list(vocabulary.filter(first_filter).order_by(Lower(order_by)))
             second_filtered = vocabulary.filter(second_filter).order_by(Lower(order_by))
             for filtered in second_filtered:
-                if filtered not in check:
-                    check.append(filtered)
+                check_split = []
+                if language == 'ru':
+                    check_split = filtered.word.split(',')
+                elif language == 'ua':
+                    check_split = filtered.word_u.split(',')
+                elif language == 'en':
+                    check_split = filtered.word_a.split(',')
+
+                for check_split_word in check_split:
+                    check_split_word_list = check_split_word.split('.')
+                    for check_split_word_word in check_split_word_list:
+                        if check_split_word_word.strip() == value:
+                            if filtered not in check:
+                                check.append(filtered)
+                            break
+
+                # if filtered not in check:
+                #     check.append(filtered)
             # third_filtered = vocabulary.filter(third_filter).order_by(Lower(order_by))
             # for filtered in third_filtered:
             #     if filtered not in check:
