@@ -57,19 +57,19 @@ def api_root_vocabulary_by_search(request):
             order_by = 'word'
             first_filter = Q(word=value)
             second_filter = Q(word__icontains=value) & Q(word__icontains=',')
-            third_filter = Q(word__icontains=value)
+            # third_filter = Q(word__icontains=value)
         elif language == 'ua':
             order_by = 'word_u'
             first_filter = Q(word_u__istartswith=value[0], word_u__icontains=value)
             second_filter = Q(word_u__icontains=value) & Q(word_u__icontains=',')
             # second_filter = Q(word_u__regex=r'\b{}\b'.format(value))
-            third_filter = Q(word__icontains=value)
+            # third_filter = Q(word__icontains=value)
         elif language == 'en':
             order_by = 'word_a'
             first_filter = Q(word_a__istartswith=value[0], word_a__icontains=value)
             second_filter = Q(word_a__icontains=value) & Q(word_a__icontains=',')
             # second_filter = Q(word_a__regex=r'\b{}\b'.format(value))
-            third_filter = Q(word__icontains=value)
+            # third_filter = Q(word__icontains=value)
 
         check = []
         if first_filter:
@@ -78,10 +78,10 @@ def api_root_vocabulary_by_search(request):
             for filtered in second_filtered:
                 if filtered not in check:
                     check.append(filtered)
-            third_filtered = vocabulary.filter(third_filter).order_by(Lower(order_by))
-            for filtered in third_filtered:
-                if filtered not in check:
-                    check.append(filtered)
+            # third_filtered = vocabulary.filter(third_filter).order_by(Lower(order_by))
+            # for filtered in third_filtered:
+            #     if filtered not in check:
+            #         check.append(filtered)
 
         if not check:
             if '.' not in value:
@@ -113,7 +113,7 @@ def api_root_vocabulary_by_root(request):
         root = Root.objects.filter(root=root).first()
         if root:
             vocabulary = get_vocabulary()
-            result = vocabulary.filter(root__icontains=root).order_by('link')
+            result = vocabulary.filter(root=root).order_by('link')
             vocabulary = result
 
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
