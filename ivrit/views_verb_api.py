@@ -16,7 +16,7 @@ def get_roots():
 
 
 def get_vocabulary():
-    roots = Root.objects.filter(root__icontains='.').order_by('root')
+    roots = Root.objects.filter(~Q(root__icontains=','), root__icontains='.').order_by('root')
     # roots = get_roots()
     filter_roots = [item.root for item in roots]
     vocabulary = Vocabulary.objects.filter(root__in=filter_roots)
@@ -56,18 +56,18 @@ def api_root_vocabulary_by_search(request):
         if language == 'ru':
             order_by = 'word'
             first_filter = Q(word=value)
-            second_filter = Q(word__icontains=value) & Q(word__icontains=',')
+            second_filter = Q(word__icontains=value) & (Q(word__icontains=',') | Q(word__icontains='.'))
             # third_filter = Q(word__icontains=value)
         elif language == 'ua':
             order_by = 'word_u'
             first_filter = Q(word_u__istartswith=value[0], word_u__icontains=value)
-            second_filter = Q(word_u__icontains=value) & Q(word_u__icontains=',')
+            second_filter = Q(word_u__icontains=value) & (Q(word_u__icontains=',') | Q(word_u__icontains='.'))
             # second_filter = Q(word_u__regex=r'\b{}\b'.format(value))
             # third_filter = Q(word__icontains=value)
         elif language == 'en':
             order_by = 'word_a'
             first_filter = Q(word_a__istartswith=value[0], word_a__icontains=value)
-            second_filter = Q(word_a__icontains=value) & Q(word_a__icontains=',')
+            second_filter = Q(word_a__icontains=value) & (Q(word_a__icontains=',') | Q(word_a__icontains='.'))
             # second_filter = Q(word_a__regex=r'\b{}\b'.format(value))
             # third_filter = Q(word__icontains=value)
 
@@ -87,6 +87,7 @@ def api_root_vocabulary_by_search(request):
                 for check_split_word in check_split:
                     check_split_word_list = check_split_word.split('.')
                     for check_split_word_word in check_split_word_list:
+                        print(check_split_word_word)
                         if check_split_word_word.strip() == value:
                             if filtered not in check:
                                 check.append(filtered)
