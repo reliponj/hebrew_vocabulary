@@ -1,6 +1,8 @@
+import re
+
 from django.conf import settings
-from django.db.models import Q
-from django.db.models.functions import Lower
+from django.db.models import Q, Count, F, Value
+from django.db.models.functions import Lower, Length, Replace
 from django.http import JsonResponse
 from django.shortcuts import redirect
 
@@ -16,7 +18,12 @@ def get_roots():
 
 
 def get_vocabulary():
-    roots = Root.objects.filter(~Q(root__icontains=','), root__icontains='.').order_by('root')
+    roots = Root.objects.annotate(
+        original_length=Length('root'),
+        without_dots_length=Length(Replace('root', Value('.'), Value('')))
+    ).filter(~Q(root__icontains=','),
+             root__icontains='.',
+             original_length__gt=F('without_dots_length') + 1).order_by('root')
     # roots = get_roots()
     filter_roots = [item.root for item in roots]
     vocabulary = Vocabulary.objects.filter(root__in=filter_roots)
@@ -76,13 +83,15 @@ def api_root_vocabulary_by_search(request):
             check = list(vocabulary.filter(first_filter).order_by(Lower(order_by)))
             second_filtered = vocabulary.filter(second_filter).order_by(Lower(order_by))
             for filtered in second_filtered:
-                check_split = []
                 if language == 'ru':
-                    check_split = filtered.word.split(',')
+                    word = filtered.word
                 elif language == 'ua':
-                    check_split = filtered.word_u.split(',')
+                    word = filtered.word_u
                 elif language == 'en':
-                    check_split = filtered.word_a.split(',')
+                    word = filtered.word_a
+                word = re.sub(r'\d+', '', word)
+
+                check_split = word.split(',')
 
                 for check_split_word in check_split:
                     check_split_word_list = check_split_word.split('.')
