@@ -63,18 +63,27 @@ def api_root_vocabulary_by_search(request):
         if language == 'ru':
             order_by = 'word'
             first_filter = Q(word=value)
-            second_filter = Q(word__icontains=value) & (Q(word__icontains=',') | Q(word__icontains='.'))
+            second_filter = Q(word__icontains=value) & (Q(word__icontains=',') |
+                                                        Q(word__icontains='.') |
+                                                        Q(word__icontains=';') |
+                                                        Q(word__icontains='='))
             # third_filter = Q(word__icontains=value)
         elif language == 'ua':
             order_by = 'word_u'
             first_filter = Q(word_u__istartswith=value[0], word_u__icontains=value)
-            second_filter = Q(word_u__icontains=value) & (Q(word_u__icontains=',') | Q(word_u__icontains='.'))
+            second_filter = Q(word_u__icontains=value) & (Q(word_u__icontains=',') |
+                                                          Q(word_u__icontains='.') |
+                                                          Q(word_u__icontains=';') |
+                                                          Q(word_u__icontains='='))
             # second_filter = Q(word_u__regex=r'\b{}\b'.format(value))
             # third_filter = Q(word__icontains=value)
         elif language == 'en':
             order_by = 'word_a'
             first_filter = Q(word_a__istartswith=value[0], word_a__icontains=value)
-            second_filter = Q(word_a__icontains=value) & (Q(word_a__icontains=',') | Q(word_a__icontains='.'))
+            second_filter = Q(word_a__icontains=value) & (Q(word_a__icontains=',') |
+                                                          Q(word_a__icontains='.') |
+                                                          Q(word_u__icontains=';') |
+                                                          Q(word_u__icontains='='))
             # second_filter = Q(word_a__regex=r'\b{}\b'.format(value))
             # third_filter = Q(word__icontains=value)
 
@@ -89,18 +98,20 @@ def api_root_vocabulary_by_search(request):
                     word = filtered.word_u
                 elif language == 'en':
                     word = filtered.word_a
+
+                print(word)
                 word = re.sub(r'\d+', '', word)
+                word = word.replace(';', ',')
+                word = word.replace('=', ',')
+                word = word.replace('.', ',')
+                print(word)
 
                 check_split = word.split(',')
 
                 for check_split_word in check_split:
-                    check_split_word_list = check_split_word.split('.')
-                    for check_split_word_word in check_split_word_list:
-                        print(check_split_word_word)
-                        if check_split_word_word.strip() == value:
-                            if filtered not in check:
-                                check.append(filtered)
-                            break
+                    if check_split_word.strip() == value:
+                        if filtered not in check:
+                            check.append(filtered)
 
                 # if filtered not in check:
                 #     check.append(filtered)
