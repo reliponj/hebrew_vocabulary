@@ -53,7 +53,7 @@ def api_root_vocabulary_by_search(request):
     language = request.GET.get('language')
     vocabulary = []
     if value:
-        value = value.strip()
+        value = value.strip().lower()
         vocabulary = get_vocabulary()
 
         order_by = "words"
