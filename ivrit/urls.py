@@ -5,6 +5,7 @@ from ivrit import views, views_verb_api
 urlpatterns = [
     path('', views.index, name="index"),
     path('privacy/', views.privacy, name="privacy"),
+    path('contact/', views.contact, name="contact"),
     path('change_filter/<param>/<value>/', views.change_filter, name='change_filter'),
 
     path('api/vocabulary/', views.api_vocabulary),
