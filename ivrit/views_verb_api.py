@@ -149,9 +149,11 @@ def api_root_vocabulary_by_root(request):
     if root:
         root = Root.objects.filter(root=root).first()
         if root:
-            vocabulary = get_vocabulary()
-            result = vocabulary.filter(root=root).order_by('link')
-            vocabulary = result
+            result = get_vocabulary()
+            result = result.filter(root=root).order_by('link')
+            for res in result:
+                if re.search(r'\d', res.link):
+                    vocabulary.append(res)
 
     vocabulary_list = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(vocabulary_list, safe=False)
