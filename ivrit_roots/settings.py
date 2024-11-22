@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ivrit',
     'user',
     'payment',
+    'binyan',
 ]
 
 MIDDLEWARE = [
