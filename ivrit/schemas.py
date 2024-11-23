@@ -47,6 +47,11 @@ class SettingsSchema(BaseModel):
     app_verb_about_en: str
     app_verb_about_il: str
 
+    app_binyan_about_ru: str
+    app_binyan_about_ua: str
+    app_binyan_about_en: str
+    app_binyan_about_il: str
+
     class Config:
         orm_mode = True
         from_attributes = True

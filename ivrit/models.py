@@ -21,6 +21,11 @@ class Setting(models.Model):
     app_verb_about_en = models.TextField('Справка App Verb (EN)', blank=True, default='')
     app_verb_about_il = models.TextField('Справка App Verb (IL)', blank=True, default='')
 
+    app_binyan_about_ru = models.TextField('Справка App Binyan (RU)', blank=True, default='')
+    app_binyan_about_ua = models.TextField('Справка App Binyan (UA)', blank=True, default='')
+    app_binyan_about_en = models.TextField('Справка App Binyan (EN)', blank=True, default='')
+    app_binyan_about_il = models.TextField('Справка App Binyan (IL)', blank=True, default='')
+
     class Meta:
         verbose_name = 'Настройки'
         verbose_name_plural = 'Настройки'
