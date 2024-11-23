@@ -49,5 +49,5 @@ def verbs(request):
         order_by = 'word_a'
         vocabulary = vocabulary.filter(Q(word_a__istartswith=value)).order_by(Lower(order_by))
 
-    data = [VocabularySchema.from_orm(item).dict() for item in vocabulary[:20]]
+    data = [VocabularySchema.from_orm(item).dict() for item in vocabulary]
     return JsonResponse(data, safe=False)
